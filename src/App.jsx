@@ -7,6 +7,9 @@ import ListingDetail from "./pages/ListingDetail";
 import Messages from "./pages/Messages";
 import LandlordDashboard from "./pages/LandlordDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
 
 export default function App() {
   const location = useLocation();
@@ -21,6 +24,8 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/listing/:id" element={<ListingDetail />} />
         <Route path="/messages" element={<Messages />} />

@@ -6,15 +6,15 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="overflow-hidden bg-white">
 
       {/* ================= HERO ================= */}
-      <section className="relative px-8 lg:px-20 pt-24 pb-28 bg-white overflow-hidden">
+      <section className="overflow-hidden relative px-8 pt-24 pb-28 bg-white lg:px-20">
 
         {/* Soft Glow Background */}
         <div className="absolute right-0 top-0 w-[600px] h-[600px] bg-blue-100 rounded-full blur-3xl opacity-40 -z-10"></div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid gap-16 items-center lg:grid-cols-2">
 
           {/* LEFT CONTENT */}
           <motion.div
@@ -22,21 +22,21 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+            <h1 className="text-6xl font-bold tracking-tight leading-tight text-gray-900">
               Find Verified Boarding Houses in Borongan
             </h1>
 
-            <p className="mt-6 text-lg text-gray-700 max-w-lg">
+            <p className="mt-6 max-w-lg text-lg text-gray-700">
               Discover safe, admin-approved rentals near ESSU Borongan
               with real locations and secure in-app messaging.
             </p>
 
-            <div className="mt-10 flex gap-4">
+            <div className="flex gap-4 mt-10">
               <Link to="/browse">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-blue-900 text-white px-10 py-4 rounded-full shadow-lg hover:shadow-2xl transition-all"
+                  className="px-10 py-4 text-white bg-blue-900 rounded-full shadow-lg transition-all hover:shadow-2xl"
                 >
                   Browse Listings
                 </motion.button>
@@ -46,7 +46,7 @@ export default function Home() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="border border-gray-300 px-10 py-4 rounded-full hover:bg-gray-100 transition-all"
+                  className="px-10 py-4 rounded-full border border-gray-300 transition-all hover:bg-gray-100"
                 >
                   List Property
                 </motion.button>
@@ -65,7 +65,7 @@ export default function Home() {
               center={[11.6085, 125.4310]}
               zoom={14}
               scrollWheelZoom={false}
-              className="h-full w-full"
+              className="w-full h-full"
             >
               <TileLayer
                 attribution="&copy; OpenStreetMap"
@@ -79,18 +79,18 @@ export default function Home() {
       </section>
 
       {/* ================= MARKETPLACE ================= */}
-      <section className="px-8 lg:px-20 py-28 bg-gray-50 border-t border-gray-100">
+      <section className="px-8 py-28 bg-gray-50 border-t border-gray-100 lg:px-20">
 
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="grid lg:grid-cols-2 gap-16"
+          className="grid gap-16 lg:grid-cols-2"
         >
 
           {/* LEFT GRID */}
-          <div className="grid sm:grid-cols-2 gap-8">
+          <div className="grid gap-8 sm:grid-cols-2">
             {[1, 2, 3, 4].map((item) => (
               <motion.div
                 key={item}
@@ -118,7 +118,7 @@ export default function Home() {
               center={[11.6085, 125.4310]}
               zoom={14}
               scrollWheelZoom={true}
-              className="h-full w-full"
+              className="w-full h-full"
             >
               <TileLayer
                 attribution="&copy; OpenStreetMap"
@@ -132,7 +132,7 @@ export default function Home() {
       </section>
 
       {/* ================= TRUST ================= */}
-      <section className="px-8 lg:px-20 py-28 bg-white border-t border-gray-100 text-center">
+      <section className="px-8 py-28 text-center bg-white border-t border-gray-100 lg:px-20">
 
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -144,7 +144,7 @@ export default function Home() {
           Built for ESSU Students
         </motion.h2>
 
-        <div className="mt-16 grid md:grid-cols-4 gap-10">
+        <div className="grid gap-10 mt-16 md:grid-cols-4">
           {[
             "Verified Listings",
             "Admin Moderated",
@@ -155,7 +155,7 @@ export default function Home() {
               key={index}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-              className="bg-gray-50 p-8 rounded-3xl shadow-sm"
+              className="p-8 bg-gray-50 rounded-3xl shadow-sm"
             >
               <p className="font-semibold text-gray-900">{item}</p>
             </motion.div>
@@ -164,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="bg-blue-900 py-28 px-8 lg:px-20 text-center text-white">
+      <section className="px-8 py-28 text-center text-white bg-blue-900 lg:px-20">
 
         <motion.h2
           initial={{ opacity: 0 }}
@@ -180,7 +180,7 @@ export default function Home() {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            className="mt-10 bg-white text-blue-900 px-12 py-4 rounded-full font-semibold shadow-lg hover:shadow-2xl transition-all"
+            className="px-12 py-4 mt-10 font-semibold text-blue-900 bg-white rounded-full shadow-lg transition-all hover:shadow-2xl"
           >
             Browse Now
           </motion.button>
