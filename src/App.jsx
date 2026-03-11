@@ -10,13 +10,12 @@ import Messages from "./pages/Messages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-// tenant / admin
-import TenantDashboard from "./pages/TenantDashboard";
+// admin
 import AdminDashboard from "./pages/AdminDashboard";
 
-// landlord layout + pages
+// landlord
 import LandlordLayout from "./pages/landlord/LandlordLayout";
-import Dashboard from "./pages/landlord/dashboard";
+import Dashboard from "./pages/landlord/Dashboard";
 import MyDorms from "./pages/landlord/MyDorms";
 import AddDorm from "./pages/landlord/AddDorm";
 import Bookings from "./pages/landlord/Bookings";
@@ -24,10 +23,18 @@ import LandlordMessages from "./pages/landlord/Messages";
 import Profile from "./pages/landlord/Profile";
 import Settings from "./pages/landlord/Settings";
 
+// tenant NEW
+import TenantLayout from "./pages/tenant/TenantLayout";
+import TenantDash from "./pages/tenant/Dashboard";
+import TenantBrowse from "./pages/tenant/Browse";
+import TenantBookings from "./pages/tenant/Bookings";
+import TenantMessages from "./pages/tenant/Messages";
+import TenantProfile from "./pages/tenant/Profile";
+import TenantSettings from "./pages/tenant/Settings";
+
 export default function App() {
   const location = useLocation();
 
-  // hide navbar on dashboards
   const hideNavbarRoutes = [
     "/tenant",
     "/landlord",
@@ -55,17 +62,6 @@ export default function App() {
         <Route path="/register" element={<Register />} />
 
 
-        {/* TENANT */}
-        <Route
-          path="/tenant"
-          element={
-            <ProtectedRoute role="student">
-              <TenantDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-
         {/* ADMIN */}
         <Route
           path="/admin"
@@ -77,7 +73,7 @@ export default function App() {
         />
 
 
-        {/* LANDLORD LAYOUT */}
+        {/* LANDLORD */}
         <Route
           path="/landlord"
           element={
@@ -86,7 +82,6 @@ export default function App() {
             </ProtectedRoute>
           }
         >
-
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dorms" element={<MyDorms />} />
           <Route path="add" element={<AddDorm />} />
@@ -94,8 +89,26 @@ export default function App() {
           <Route path="messages" element={<LandlordMessages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
-
         </Route>
+
+
+        {/* TENANT NEW */}
+        <Route
+          path="/tenant"
+          element={
+            <ProtectedRoute role="student">
+              <TenantLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<TenantDash />} />
+          <Route path="browse" element={<TenantBrowse />} />
+          <Route path="bookings" element={<TenantBookings />} />
+          <Route path="messages" element={<TenantMessages />} />
+          <Route path="profile" element={<TenantProfile />} />
+          <Route path="settings" element={<TenantSettings />} />
+        </Route>
+
 
       </Routes>
     </>
