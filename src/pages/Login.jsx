@@ -37,11 +37,11 @@ export default function Login() {
         if (data.user.role === "admin") {
           navigate("/admin");
         }
-
+        
         if (data.user.role === "landlord") {
-          navigate("/landlord");
+          navigate("/landlord/dashboard");
         }
-
+        
         if (data.user.role === "student") {
           navigate("/tenant");
         }
