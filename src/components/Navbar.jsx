@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav className="sticky top-0 z-[1000] bg-white border-b border-gray-200">
+      <div className="flex justify-between items-center px-6 py-4 mx-auto max-w-7xl">
         
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-blue-900">
@@ -11,7 +11,7 @@ export default function Navbar() {
         </Link>
 
         {/* Center Navigation */}
-        <div className="hidden md:flex gap-8 text-gray-700 font-medium">
+        <div className="hidden gap-8 font-medium text-gray-700 md:flex">
           <Link to="/" className="hover:text-blue-600">Home</Link>
           <Link to="/about" className="hover:text-blue-600">About</Link>
           <Link to="/how-it-works" className="hover:text-blue-600">How It Works</Link>
@@ -25,7 +25,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/register"
-            className="bg-blue-900 text-white px-4 py-2 rounded-xl hover:bg-blue-800 transition"
+            className="px-4 py-2 text-white bg-blue-900 rounded-xl transition hover:bg-blue-800"
           >
             Sign Up
           </Link>

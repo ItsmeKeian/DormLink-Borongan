@@ -1,10 +1,8 @@
-
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
-  BedDouble,
-  Plus,
+  Search,
   Calendar,
   MessageSquare,
   User,
@@ -13,23 +11,23 @@ import {
   Bell,
 } from "lucide-react";
 
-export default function LandlordDashboard() {
+export default function TenantDashboard() {
   const [tab, setTab] = useState("dashboard");
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await fetch(
-      "http://localhost/dormlink-borongan-api/logout.php",
-      {
-        credentials: "include",
-      }
-    );
+const handleLogout = async () => {
+  await fetch(
+    "http://localhost/dormlink-borongan-api/logout.php",
+    {
+      credentials: "include",
+    }
+  );
 
-    localStorage.removeItem("user");
+  localStorage.removeItem("user");
 
-    navigate("/login");
-  };
+  navigate("/login");
+};
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -49,22 +47,15 @@ export default function LandlordDashboard() {
         />
 
         <MenuItem
-          icon={<BedDouble size={18} />}
-          label="My Dorms"
-          active={tab === "dorms"}
-          onClick={() => setTab("dorms")}
-        />
-
-        <MenuItem
-          icon={<Plus size={18} />}
-          label="Add Dorm"
-          active={tab === "add"}
-          onClick={() => setTab("add")}
+          icon={<Search size={18} />}
+          label="Browse Dorms"
+          active={tab === "browse"}
+          onClick={() => setTab("browse")}
         />
 
         <MenuItem
           icon={<Calendar size={18} />}
-          label="Bookings"
+          label="My Bookings"
           active={tab === "bookings"}
           onClick={() => setTab("bookings")}
         />
@@ -90,11 +81,11 @@ export default function LandlordDashboard() {
           onClick={() => setTab("settings")}
         />
 
-        <MenuItem
-          icon={<LogOut size={18} />}
-          label="Logout"
-          onClick={handleLogout}
-        />
+                <MenuItem
+                icon={<LogOut size={18} />}
+                label="Logout"
+                onClick={handleLogout}
+                />
 
       </div>
 
@@ -109,7 +100,7 @@ export default function LandlordDashboard() {
           <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
             K
           </div>
-
+            
         </div>
 
         {/* CONTENT */}
@@ -117,25 +108,19 @@ export default function LandlordDashboard() {
 
           {tab === "dashboard" && (
             <h1 className="text-2xl font-semibold">
-              Dashboard
+              Tenant Dashboard
             </h1>
           )}
 
-          {tab === "dorms" && (
+          {tab === "browse" && (
             <h1 className="text-2xl font-semibold">
-              My Dorms
-            </h1>
-          )}
-
-          {tab === "add" && (
-            <h1 className="text-2xl font-semibold">
-              Add Dorm
+              Browse Dorms
             </h1>
           )}
 
           {tab === "bookings" && (
             <h1 className="text-2xl font-semibold">
-              Bookings
+              My Bookings
             </h1>
           )}
 
@@ -172,7 +157,7 @@ function MenuItem({ icon, label, active, onClick }) {
       className={`w-full flex items-center gap-3 px-5 py-3 text-left
       ${
         active
-          ? "text-blue-900 bg-blue-100"
+          ? "text-blue-900 bg-blue-50"
           : "text-gray-600 hover:bg-gray-100"
       }`}
     >

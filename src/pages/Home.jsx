@@ -6,186 +6,254 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="overflow-hidden bg-white">
+    <div className="bg-white">
 
       {/* ================= HERO ================= */}
-      <section className="overflow-hidden relative px-8 pt-24 pb-28 bg-white lg:px-20">
 
-        {/* Soft Glow Background */}
-        <div className="absolute right-0 top-0 w-[600px] h-[600px] bg-blue-100 rounded-full blur-3xl opacity-40 -z-10"></div>
+      <section className="px-8 pt-24 pb-28 lg:px-20">
 
         <div className="grid gap-16 items-center lg:grid-cols-2">
 
-          {/* LEFT CONTENT */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-6xl font-bold tracking-tight leading-tight text-gray-900">
+          <div>
+
+            <h1 className="text-6xl font-bold leading-tight text-gray-900">
               Find Verified Boarding Houses in Borongan
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg text-gray-700">
-              Discover safe, admin-approved rentals near ESSU Borongan
-              with real locations and secure in-app messaging.
+            <p className="mt-6 max-w-lg text-lg text-gray-600">
+              Safe, admin-approved rentals near ESSU Borongan
+              with real locations and secure messaging.
             </p>
 
             <div className="flex gap-4 mt-10">
+
               <Link to="/browse">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-10 py-4 text-white bg-blue-900 rounded-full shadow-lg transition-all hover:shadow-2xl"
-                >
+                <button className="px-8 py-4 text-white bg-blue-900 rounded-full shadow">
                   Browse Listings
-                </motion.button>
+                </button>
               </Link>
 
               <Link to="/register">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-10 py-4 rounded-full border border-gray-300 transition-all hover:bg-gray-100"
-                >
+                <button className="px-8 py-4 rounded-full border">
                   List Property
-                </motion.button>
+                </button>
               </Link>
+
             </div>
-          </motion.div>
 
-          {/* RIGHT MAP */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="h-[450px] rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <MapContainer
-              center={[11.6085, 125.4310]}
-              zoom={14}
-              scrollWheelZoom={false}
-              className="w-full h-full"
-            >
-              <TileLayer
-                attribution="&copy; OpenStreetMap"
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[11.6085, 125.4310]} />
-            </MapContainer>
-          </motion.div>
-
-        </div>
-      </section>
-
-      {/* ================= MARKETPLACE ================= */}
-      <section className="px-8 py-28 bg-gray-50 border-t border-gray-100 lg:px-20">
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="grid gap-16 lg:grid-cols-2"
-        >
-
-          {/* LEFT GRID */}
-          <div className="grid gap-8 sm:grid-cols-2">
-            {[1, 2, 3, 4].map((item) => (
-              <motion.div
-                key={item}
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ListingCard
-                  listing={{
-                    id: item,
-                    title: "Cozy Boarding House",
-                    price: 2500,
-                    distance: 0.4,
-                    status: "available",
-                    image:
-                      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-                  }}
-                />
-              </motion.div>
-            ))}
           </div>
+
 
           {/* MAP */}
-          <div className="h-[650px] rounded-3xl overflow-hidden shadow-xl sticky top-24">
+
+          <div className="h-[450px] rounded-3xl overflow-hidden shadow-xl">
+
             <MapContainer
               center={[11.6085, 125.4310]}
               zoom={14}
-              scrollWheelZoom={true}
               className="w-full h-full"
             >
               <TileLayer
-                attribution="&copy; OpenStreetMap"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[11.6085, 125.4310]} />
             </MapContainer>
+
           </div>
 
-        </motion.div>
-      </section>
-
-      {/* ================= TRUST ================= */}
-      <section className="px-8 py-28 text-center bg-white border-t border-gray-100 lg:px-20">
-
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-4xl font-bold text-gray-900"
-        >
-          Built for ESSU Students
-        </motion.h2>
-
-        <div className="grid gap-10 mt-16 md:grid-cols-4">
-          {[
-            "Verified Listings",
-            "Admin Moderated",
-            "Real Locations",
-            "Secure Messaging",
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              className="p-8 bg-gray-50 rounded-3xl shadow-sm"
-            >
-              <p className="font-semibold text-gray-900">{item}</p>
-            </motion.div>
-          ))}
         </div>
+
       </section>
 
-      {/* ================= CTA ================= */}
-      <section className="px-8 py-28 text-center text-white bg-blue-900 lg:px-20">
 
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-4xl font-bold"
-        >
+
+      {/* ================= FEATURED ================= */}
+
+      <section className="px-8 py-24 bg-gray-50 lg:px-20">
+
+        <h2 className="mb-10 text-3xl font-bold">
+          Featured Boarding Houses
+        </h2>
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+          {[1,2,3,4].map(i => (
+
+            <ListingCard
+              key={i}
+              listing={{
+                id: i,
+                title: "Boarding House",
+                price: 2500,
+                distance: 0.4,
+                status: "available",
+                image:
+                  "",
+              }}
+            />
+
+          ))}
+
+        </div>
+
+      </section>
+
+
+
+      {/* ================= LISTINGS + MAP ================= */}
+
+      <section className="px-8 py-28 lg:px-20">
+
+        <div className="grid gap-16 lg:grid-cols-2">
+
+          <div className="grid gap-8 sm:grid-cols-2">
+
+            {[1,2,3,4].map(i => (
+
+              <ListingCard
+                key={i}
+                listing={{
+                  id: i,
+                  title: "Boarding House",
+                  price: 2500,
+                  distance: 0.4,
+                  status: "available",
+                  image:
+                    "",
+                }}
+              />
+
+            ))}
+
+          </div>
+
+
+          <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl sticky top-24">
+
+            <MapContainer
+              center={[11.6085, 125.4310]}
+              zoom={14}
+              className="w-full h-full"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[11.6085, 125.4310]} />
+            </MapContainer>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      {/* ================= INFO SECTION ================= */}
+
+      <section className="px-8 py-28 bg-gray-50 lg:px-20">
+
+        <div className="grid gap-16 items-center lg:grid-cols-2">
+
+          <div>
+
+            <h2 className="text-4xl font-bold">
+              Safe & Verified Listings
+            </h2>
+
+            <p className="mt-4 text-gray-600">
+              All dorms are reviewed by admin to ensure safety,
+              real location, and student-friendly prices.
+            </p>
+
+            <button className="px-6 py-3 mt-6 text-white bg-blue-900 rounded-xl">
+              Browse Listings
+            </button>
+
+          </div>
+
+          <div className="h-[400px] bg-gray-200 rounded-3xl" />
+
+        </div>
+
+      </section>
+
+
+
+      {/* ================= STATS ================= */}
+
+      <section className="py-20">
+
+        <div className="grid grid-cols-2 gap-10 mx-auto max-w-6xl text-center md:grid-cols-4">
+
+          <div>
+            <h3 className="text-3xl font-bold">500+</h3>
+            <p>Listings</p>
+          </div>
+
+          <div>
+            <h3 className="text-3xl font-bold">200+</h3>
+            <p>Students</p>
+          </div>
+
+          <div>
+            <h3 className="text-3xl font-bold">50+</h3>
+            <p>Landlords</p>
+          </div>
+
+          <div>
+            <h3 className="text-3xl font-bold">100%</h3>
+            <p>Verified</p>
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      {/* ================= LANDLORD CTA ================= */}
+
+      <section className="py-28 text-center text-white bg-blue-900">
+
+        <h2 className="text-4xl font-bold">
+          Are you a Landlord?
+        </h2>
+
+        <p className="mt-4">
+          List your boarding house and reach ESSU students.
+        </p>
+
+        <Link to="/register">
+
+          <button className="px-8 py-4 mt-8 text-blue-900 bg-white rounded-full">
+            List Property
+          </button>
+
+        </Link>
+
+      </section>
+
+
+
+      {/* ================= FINAL CTA ================= */}
+
+      <section className="py-28 text-center">
+
+        <h2 className="text-4xl font-bold">
           Ready to Find Your Boarding House?
-        </motion.h2>
+        </h2>
 
         <Link to="/browse">
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-12 py-4 mt-10 font-semibold text-blue-900 bg-white rounded-full shadow-lg transition-all hover:shadow-2xl"
-          >
+
+          <button className="px-10 py-4 mt-8 text-white bg-blue-900 rounded-full">
             Browse Now
-          </motion.button>
+          </button>
+
         </Link>
+
       </section>
+
 
     </div>
   );

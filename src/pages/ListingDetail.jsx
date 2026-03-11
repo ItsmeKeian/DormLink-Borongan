@@ -8,7 +8,7 @@ export default function ListingDetail() {
     <div className="bg-white">
 
       {/* TITLE + ACTIONS */}
-      <section className="px-8 lg:px-20 pt-10">
+      <section className="px-8 pt-10 lg:px-20">
         <h1 className="text-3xl font-extrabold text-gray-900">
           Cozy Boarding House near ESSU
         </h1>
@@ -19,34 +19,34 @@ export default function ListingDetail() {
       </section>
 
       {/* IMAGE GALLERY */}
-      <section className="px-8 lg:px-20 mt-6">
+      <section className="px-8 mt-6 lg:px-20">
         <div className="grid grid-cols-4 grid-rows-2 gap-3 h-[520px] rounded-2xl overflow-hidden">
 
           <div className="col-span-2 row-span-2">
             <img
               src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
-              className="w-full h-full object-cover"
+              className="object-cover w-full h-full"
             />
           </div>
 
           <img
             src="https://images.unsplash.com/photo-1560448075-bb485b067938"
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
           />
           <img
             src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc"
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
           />
           <img
             src="https://images.unsplash.com/photo-1560448074-1bfe3f0b11a1"
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
           />
           <div className="relative">
             <img
               src="https://images.unsplash.com/photo-1560448074-3b4f3d3b8e2b"
-              className="w-full h-full object-cover"
+              className="object-cover w-full h-full"
             />
-            <button className="absolute bottom-4 right-4 bg-white px-4 py-2 rounded-lg shadow-md text-sm font-medium">
+            <button className="absolute right-4 bottom-4 px-4 py-2 text-sm font-medium bg-white rounded-lg shadow-md">
               Show all photos
             </button>
           </div>
@@ -55,40 +55,40 @@ export default function ListingDetail() {
       </section>
 
       {/* MAIN CONTENT */}
-      <section className="px-8 lg:px-20 py-16 grid lg:grid-cols-3 gap-16">
+      <section className="grid gap-16 px-8 py-16 lg:px-20 lg:grid-cols-3">
 
         {/* LEFT INFO */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="space-y-8 lg:col-span-2">
 
           <div>
             <h2 className="text-xl font-semibold text-gray-900">
               Entire rental near ESSU Borongan
             </h2>
-            <p className="text-gray-500 mt-2">
+            <p className="mt-2 text-gray-500">
               1 room · Shared bathroom · Fully furnished
             </p>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
-            <p className="text-gray-700 leading-relaxed">
+          <div className="pt-6 border-t border-gray-200">
+            <p className="leading-relaxed text-gray-700">
               Fully furnished boarding room located walking distance from ESSU.
               Safe neighborhood, accessible to main road, and suitable for students.
             </p>
           </div>
 
           {/* LOCATION (GATED) */}
-          <div className="border-t border-gray-200 pt-6">
-            <h3 className="font-semibold text-gray-900 mb-3">
+          <div className="pt-6 border-t border-gray-200">
+            <h3 className="mb-3 font-semibold text-gray-900">
               Location
             </h3>
 
             {!isLoggedIn ? (
-              <div className="bg-gray-100 p-6 rounded-xl text-center">
+              <div className="p-6 text-center bg-gray-100 rounded-xl">
                 <p className="font-medium text-gray-700">
                   Login to view exact location
                 </p>
                 <Link to="/login">
-                  <button className="mt-4 bg-blue-900 text-white px-6 py-2 rounded-lg">
+                  <button className="px-6 py-2 mt-4 text-white bg-blue-900 rounded-lg">
                     Login
                   </button>
                 </Link>
@@ -103,7 +103,7 @@ export default function ListingDetail() {
         </div>
 
         {/* RIGHT PRICING CARD */}
-        <div className="border border-gray-200 rounded-2xl p-6 shadow-lg h-fit sticky top-24">
+        <div className="sticky top-24 p-6 rounded-2xl border border-gray-200 shadow-lg h-fit">
 
           <p className="text-2xl font-semibold text-gray-900">
             ₱2,500
@@ -112,11 +112,11 @@ export default function ListingDetail() {
             </span>
           </p>
 
-          <button className="mt-6 w-full bg-blue-900 text-white py-3 rounded-xl font-medium hover:shadow-lg transition">
+          <button className="py-3 mt-6 w-full font-medium text-white bg-blue-900 rounded-xl transition hover:shadow-lg">
             Login to Message
           </button>
 
-          <p className="text-xs text-gray-400 mt-4 text-center">
+          <p className="mt-4 text-xs text-center text-gray-400">
             Contact details are visible after login.
           </p>
 
