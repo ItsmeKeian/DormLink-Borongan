@@ -18,7 +18,12 @@ export default function TenantLayout() {
 
   const [open, setOpen] = useState(false);
 
-  const logout = () => {
+  const handleLogout = async () => {
+    await fetch(
+      "http://localhost/dormlinkborongan/php/logout.php",
+      { credentials: "include" }
+    );
+
     localStorage.removeItem("user");
     navigate("/");
   };
@@ -82,9 +87,9 @@ export default function TenantLayout() {
           active={location.pathname === "/tenant/settings"}
         />
 
-        <button
-          onClick={logout}
-          className="flex gap-3 px-5 py-3 w-full text-gray-600 hover:bg-gray-100"
+      <button
+          onClick={handleLogout}
+          className="flex gap-3 items-center px-5 py-3 w-full text-left text-gray-600 hover:bg-gray-100"
         >
           <LogOut size={18} />
           Logout

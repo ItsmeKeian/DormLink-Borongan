@@ -21,7 +21,7 @@ export default function LandlordLayout() {
 
   const handleLogout = async () => {
     await fetch(
-      "http://localhost/dormlink-borongan-api/logout.php",
+      "http://localhost/dormlinkborongan/php/logout.php",
       { credentials: "include" }
     );
 

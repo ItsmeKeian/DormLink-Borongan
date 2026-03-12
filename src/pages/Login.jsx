@@ -16,10 +16,11 @@ export default function Login() {
       formData.append("password", password);
 
       const res = await fetch(
-        "http://localhost/dormlink-borongan-api/login.php",
+        "http://localhost/dormlinkborongan/php/login.php",
         {
           method: "POST",
           body: formData,
+          credentials: "include",
         }
       );
 

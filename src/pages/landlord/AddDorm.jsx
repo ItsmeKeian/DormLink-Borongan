@@ -46,47 +46,74 @@ export default function AddDorm() {
   }
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
-
+  
     formData.append("name", name);
+    formData.append("category", category);
     formData.append("price", price);
     formData.append("rooms", rooms);
-    formData.append("address", address);
-    formData.append("owner", owner);
-    formData.append("contact", contact);
-    formData.append("email", email);
-    formData.append("category", category);
-    formData.append("lat", lat);
-    formData.append("lng", lng);
-    formData.append("image", image);
-    formData.append("description", description);
+  
     formData.append("slots", slots);
     formData.append("available", available);
     formData.append("gender", gender);
-
-    formData.append("wifi", wifi);
-    formData.append("aircon", aircon);
-    formData.append("cr", cr);
-    formData.append("parking", parking);
-
-    console.log("Form ready", {
-      name,
-      price,
-      rooms,
-      address,
-      owner,
-      contact,
-      email,
-      category,
-      lat,
-      lng,
-      image,
-    });
-
-    alert("Dorm ready (temporary)");
+  
+    formData.append("owner", owner);
+    formData.append("contact", contact);
+    formData.append("email", email);
+  
+    formData.append("address", address);
+    formData.append("lat", lat);
+    formData.append("lng", lng);
+  
+    formData.append("description", description);
+  
+    // ✅ convert boolean to 1/0
+    formData.append("wifi", wifi ? 1 : 0);
+    formData.append("aircon", aircon ? 1 : 0);
+    formData.append("cr", cr ? 1 : 0);
+    formData.append("parking", parking ? 1 : 0);
+  
+    if (image) {
+      formData.append("image", image);
+    }
+  
+    try {
+     
+      await fetch(
+        "http://localhost/dormlinkborongan/php/check_session.php",
+        {
+          credentials: "include",
+        }
+      )
+        .then(res => res.json())
+        .then(data => console.log("SESSION:", data));
+  
+      const res = await fetch(
+        "http://localhost/dormlinkborongan/php/add_listing.php",
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
+  
+      const data = await res.json();
+  
+      console.log(data);
+  
+      if (data.status === "success") {
+        alert("Dorm saved!");
+      } else {
+        alert("Error: " + data.message);
+      }
+  
+    } catch (err) {
+      console.log(err);
+      alert("Request failed");
+    }
   };
 
 
