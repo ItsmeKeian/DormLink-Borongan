@@ -124,9 +124,27 @@ export default function MyDorms() {
                 ₱{item.price} / month
               </p>
 
-              <p className="text-sm text-gray-500">
-                Status: {item.status}
-              </p>
+              <div className="mt-2">
+
+              {item.status === "pending" && (
+                <span className="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">
+                  Pending
+                </span>
+              )}
+
+              {item.status === "approved" && (
+                <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                  Approved
+                </span>
+              )}
+
+              {item.status === "rejected" && (
+                <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                  Rejected
+                </span>
+              )}
+
+            </div>
 
 
 
@@ -138,7 +156,7 @@ export default function MyDorms() {
                   onClick={() =>
                     navigate(`/landlord/edit/${item.id}`)
                   }
-                  className="px-3 py-1 text-white bg-gray-600 rounded"
+                  className="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg transition hover:bg-blue-700"
                 >
                   Edit
                 </button>
@@ -148,7 +166,7 @@ export default function MyDorms() {
                   onClick={() =>
                     deleteDorm(item.id)
                   }
-                  className="px-3 py-1 text-white bg-red-600 rounded"
+                  className="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-lg transition hover:bg-red-700"
                 >
                   Delete
                 </button>
