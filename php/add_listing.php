@@ -5,18 +5,13 @@ error_reporting(E_ALL);
 
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
+header("Content-Type: application/json");
 
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => '/',
-    'secure' => false,
-    'httponly' => false,
-    'samesite' => 'Lax'
-]);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 require_once "dbconnect.php";
 
 
@@ -30,56 +25,44 @@ try {
         exit;
     }
 
+
     $landlord_id = $_SESSION["user_id"];
 
 
+    /* ========= POST ========= */
+
     $title = $_POST["name"] ?? "";
     $category = $_POST["category"] ?? "";
-    $price = $_POST["price"] ?? 0;
     $rooms = $_POST["rooms"] ?? 0;
 
     $slots = $_POST["slots"] ?? 0;
     $available = $_POST["available"] ?? 0;
+
     $gender = $_POST["gender"] ?? "";
+    $description = $_POST["description"] ?? "";
 
-    $contact = $_POST["contact"] ?? "";
-    $email = $_POST["email"] ?? "";
-
+    $price = $_POST["price"] ?? 0;
     $address = $_POST["address"] ?? "";
+
     $lat = $_POST["lat"] ?? 0;
     $lng = $_POST["lng"] ?? 0;
-
-    $description = $_POST["description"] ?? "";
 
     $wifi = $_POST["wifi"] ?? 0;
     $aircon = $_POST["aircon"] ?? 0;
     $own_cr = $_POST["cr"] ?? 0;
     $parking = $_POST["parking"] ?? 0;
 
-    $status = "pending";
+    $contact = $_POST["contact"] ?? "";
+    $email = $_POST["email"] ?? "";
+
     $availability = "available";
+    $status = "pending";
 
 
-    // ===== IMAGE =====
-
-    $imageName = "";
-
-    if (!empty($_FILES["image"]["name"])) {
-
-        if (!is_dir("uploads")) {
-            mkdir("uploads");
-        }
-
-        $imageName = time() . "_" . $_FILES["image"]["name"];
-
-        move_uploaded_file(
-            $_FILES["image"]["tmp_name"],
-            "uploads/" . $imageName
-        );
-    }
-
+    /* ========= INSERT LISTING ========= */
 
     $sql = "INSERT INTO listings (
+
         landlord_id,
         title,
         category,
@@ -92,7 +75,6 @@ try {
         address,
         latitude,
         longitude,
-        image,
         wifi,
         aircon,
         own_cr,
@@ -101,14 +83,14 @@ try {
         email,
         availability,
         status
-    ) VALUES (
-        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-    )";
+
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     $stmt = $pdo->prepare($sql);
 
     $stmt->execute([
+
         $landlord_id,
         $title,
         $category,
@@ -121,7 +103,6 @@ try {
         $address,
         $lat,
         $lng,
-        $imageName,
         $wifi,
         $aircon,
         $own_cr,
@@ -130,7 +111,49 @@ try {
         $email,
         $availability,
         $status
+
     ]);
+
+
+    /* ========= GET LISTING ID ========= */
+
+    $listing_id = $pdo->lastInsertId();
+
+
+    /* ========= UPLOAD IMAGES ========= */
+
+    $uploadDir = __DIR__ . "/uploads/";
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+
+    if (!empty($_FILES["images"]["name"][0])) {
+
+        foreach ($_FILES["images"]["name"] as $key => $name) {
+
+            $tmp = $_FILES["images"]["tmp_name"][$key];
+
+            $fileName = time() . "_" . $name;
+
+            move_uploaded_file(
+                $tmp,
+                $uploadDir . $fileName
+            );
+
+
+            $stmtImg = $pdo->prepare(
+                "INSERT INTO listing_images (listing_id, image)
+                 VALUES (?, ?)"
+            );
+
+            $stmtImg->execute([
+                $listing_id,
+                $fileName
+            ]);
+        }
+    }
 
 
     echo json_encode([

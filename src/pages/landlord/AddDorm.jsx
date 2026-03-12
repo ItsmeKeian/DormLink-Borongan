@@ -6,6 +6,7 @@ export default function AddDorm() {
 
 
   const [description, setDescription] = useState("");
+  
 
   const [slots, setSlots] = useState("");
   const [available, setAvailable] = useState("");
@@ -27,7 +28,7 @@ export default function AddDorm() {
   const [email, setEmail] = useState("");
   const [category, setCategory] = useState("Dorm");
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
 
   // ✅ BORONGAN DEFAULT
   const [lat, setLat] = useState(11.6081);
@@ -76,8 +77,8 @@ export default function AddDorm() {
     formData.append("cr", cr ? 1 : 0);
     formData.append("parking", parking ? 1 : 0);
   
-    if (image) {
-      formData.append("image", image);
+    for (let i = 0; i < image.length; i++) {
+      formData.append("images[]", image[i]);
     }
   
     try {
@@ -106,6 +107,7 @@ export default function AddDorm() {
   
       if (data.status === "success") {
         alert("Dorm saved!");
+        window.location.reload();
       } else {
         alert("Error: " + data.message);
       }
@@ -256,10 +258,10 @@ export default function AddDorm() {
                 <div>
                 <label>Dorm Image</label>
                 <input
-                  type="file"
-                  className="px-3 py-2 w-full rounded-lg border"
-                  onChange={(e) => setImage(e.target.files[0])}
-                />
+                    type="file"
+                    multiple
+                    onChange={(e) => setImage(e.target.files)}
+                  />
               </div>
   
 
