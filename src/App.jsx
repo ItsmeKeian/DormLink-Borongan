@@ -9,6 +9,7 @@ import ListingDetail from "./pages/ListingDetail";
 import Messages from "./pages/Messages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import LandlordDormView from "./pages/LandlordDormView";
 
 // ---------- ADMIN ----------
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -99,6 +100,12 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+
+          <Route
+            path="mydorm/view/:id"
+            element={<LandlordDormView />}
+          />
+
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dorms" element={<MyDorms />} />
@@ -107,6 +114,7 @@ export default function App() {
           <Route path="messages" element={<LandlordMessages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+
         </Route>
 
 

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function ListingDetail() {
+export default function LandlordDormView() {
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function ListingDetail() {
   }, [id]);
 
 
-  if (!listing) return <div className="p-10">Loading...</div>;
+  if (!listing) return <div className="p-6">Loading...</div>;
 
 
   const openGallery = (index) => {
@@ -61,16 +61,17 @@ export default function ListingDetail() {
 
   return (
 
-    <div className="p-6 mx-auto max-w-6xl">
+    <div className="p-6 mx-auto max-w-5xl">
 
-      {/* BACK BUTTON */}
+      {/* BACK */}
 
       <button
         onClick={() => navigate(-1)}
         className="mb-4 text-sm text-gray-600 hover:underline"
       >
-        ← Back to listings
+        ← Back
       </button>
+
 
 
       {/* TITLE */}
@@ -85,7 +86,7 @@ export default function ListingDetail() {
 
 
 
-      {/* ================= GALLERY ================= */}
+      {/* GALLERY */}
 
       <div className="grid grid-cols-4 gap-2">
 
@@ -119,113 +120,54 @@ export default function ListingDetail() {
 
 
 
-      {/* ================= CONTENT ================= */}
+      {/* INFO */}
 
-      <div className="grid grid-cols-3 gap-8 mt-8">
+      <div className="mt-6 space-y-2">
 
-
-        {/* LEFT */}
-
-        <div className="col-span-2">
-
-
-          <h2 className="text-xl font-semibold">
-            ₱{listing.price} / month
-          </h2>
-
-
-          <div className="mt-3 text-gray-600">
-
-            <p>Rooms: {listing.rooms}</p>
-            <p>Slots: {listing.available_slots}</p>
-            <p>Gender: {listing.gender}</p>
-
-          </div>
-
-
-
-          {/* DESCRIPTION */}
-
-          <div className="mt-6">
-
-            <h3 className="font-semibold">
-              Description
-            </h3>
-
-            <p className="mt-2 text-gray-700">
-              {listing.description}
-            </p>
-
-          </div>
-
-
-
-          {/* AMENITIES */}
-
-          <div className="mt-6">
-
-            <h3 className="font-semibold">
-              Amenities
-            </h3>
-
-            <div className="grid grid-cols-2 gap-2 mt-2">
-
-              {listing.wifi == 1 && <p>✔ Wifi</p>}
-              {listing.aircon == 1 && <p>✔ Aircon</p>}
-              {listing.own_cr == 1 && <p>✔ Own CR</p>}
-              {listing.parking == 1 && <p>✔ Parking</p>}
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-
-        {/* RIGHT CARD */}
-
-        <div className="sticky top-6 p-6 rounded-xl border shadow h-fit">
-
-          <p className="text-2xl font-semibold">
-            ₱{listing.price}
-          </p>
-
-          <p className="text-gray-500">
-            per month
-          </p>
-
-
-          <button
-            className="py-2 mt-4 w-full text-white bg-blue-900 rounded-lg hover:bg-blue-800"
-          >
-            Message landlord
-          </button>
-
-        </div>
-
+        <p>Price: ₱{listing.price}</p>
+        <p>Rooms: {listing.rooms}</p>
+        <p>Slots: {listing.available_slots}</p>
+        <p>Gender: {listing.gender}</p>
 
       </div>
 
 
 
-      {/* ================= MODAL ================= */}
+      {/* BUTTONS */}
+
+      <div className="flex gap-4 mt-6">
+
+        <button
+          className="px-4 py-2 text-white bg-blue-600 rounded"
+        >
+          Edit
+        </button>
+
+        <button
+          className="px-4 py-2 text-white bg-red-600 rounded"
+        >
+          Delete
+        </button>
+
+      </div>
+
+
+
+      {/* MODAL */}
 
       {showGallery && (
 
         <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-90">
 
 
-          {/* BACK BUTTON */}
+          {/* BACK */}
 
           <button
-            onClick={() => navigate(-1)}
-            className="absolute top-4 left-6 px-4 py-2 text-white bg-black bg-opacity-60 rounded-lg"
+            onClick={() => setShowGallery(false)}
+            className="absolute top-4 left-6 px-4 py-2 text-white bg-black bg-opacity-60 rounded"
           >
             ← Back
           </button>
-
 
 
           {/* CLOSE */}
@@ -238,7 +180,6 @@ export default function ListingDetail() {
           </button>
 
 
-
           {/* PREV */}
 
           <button
@@ -249,17 +190,11 @@ export default function ListingDetail() {
           </button>
 
 
-
-          {/* IMAGE */}
-
           <img
             src={`http://localhost/dormlinkborongan/php/uploads/${images[current].image}`}
             className="max-h-[85vh] rounded-lg"
           />
 
-
-
-          {/* NEXT */}
 
           <button
             className="absolute right-4 text-4xl text-white"
