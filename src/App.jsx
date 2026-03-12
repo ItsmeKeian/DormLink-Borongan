@@ -10,10 +10,16 @@ import Messages from "./pages/Messages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-// admin
-import AdminDashboard from "./pages/AdminDashboard";
+// ---------- ADMIN ----------
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDash from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminListings from "./pages/admin/Listings";
+import AdminReports from "./pages/admin/Reports";
+import AdminMessages from "./pages/admin/Messages";
+import AdminSettings from "./pages/admin/Settings";
 
-// landlord
+// ---------- LANDLORD ----------
 import LandlordLayout from "./pages/landlord/LandlordLayout";
 import Dashboard from "./pages/landlord/Dashboard";
 import MyDorms from "./pages/landlord/MyDorms";
@@ -23,7 +29,7 @@ import LandlordMessages from "./pages/landlord/Messages";
 import Profile from "./pages/landlord/Profile";
 import Settings from "./pages/landlord/Settings";
 
-// tenant NEW
+// ---------- TENANT ----------
 import TenantLayout from "./pages/tenant/TenantLayout";
 import TenantDash from "./pages/tenant/Dashboard";
 import TenantBrowse from "./pages/tenant/Browse";
@@ -53,7 +59,8 @@ export default function App() {
 
       <Routes>
 
-        {/* PUBLIC */}
+        {/* ================= PUBLIC ================= */}
+
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/listing/:id" element={<ListingDetail />} />
@@ -62,18 +69,28 @@ export default function App() {
         <Route path="/register" element={<Register />} />
 
 
-        {/* ADMIN */}
+        {/* ================= ADMIN ================= */}
+
         <Route
           path="/admin"
           element={
             <ProtectedRoute role="admin">
-              <AdminDashboard />
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<AdminDash />} />
+          <Route path="dashboard" element={<AdminDash />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="listings" element={<AdminListings />} />
+          <Route path="reports" element={<AdminReports />} />
+          <Route path="messages" element={<AdminMessages />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
 
 
-        {/* LANDLORD */}
+        {/* ================= LANDLORD ================= */}
+
         <Route
           path="/landlord"
           element={
@@ -82,6 +99,7 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dorms" element={<MyDorms />} />
           <Route path="add" element={<AddDorm />} />
@@ -92,7 +110,8 @@ export default function App() {
         </Route>
 
 
-        {/* TENANT NEW */}
+        {/* ================= TENANT ================= */}
+
         <Route
           path="/tenant"
           element={
@@ -101,6 +120,7 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<TenantDash />} />
           <Route path="dashboard" element={<TenantDash />} />
           <Route path="browse" element={<TenantBrowse />} />
           <Route path="bookings" element={<TenantBookings />} />

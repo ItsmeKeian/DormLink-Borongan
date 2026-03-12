@@ -22,7 +22,7 @@ export default function LandlordLayout() {
     );
 
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   return (

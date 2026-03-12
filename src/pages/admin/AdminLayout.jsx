@@ -16,7 +16,7 @@ export default function AdminLayout() {
 
   const logout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
