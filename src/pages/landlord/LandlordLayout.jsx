@@ -49,12 +49,6 @@ export default function LandlordLayout() {
           active={location.pathname === "/landlord/dorms"}
         />
 
-        <MenuItem
-          to="/landlord/add"
-          icon={<Plus size={18} />}
-          label="Add Dorm"
-          active={location.pathname === "/landlord/add"}
-        />
 
         <MenuItem
           to="/landlord/bookings"
