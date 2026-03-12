@@ -23,6 +23,7 @@ import AdminSettings from "./pages/admin/Settings";
 import LandlordLayout from "./pages/landlord/LandlordLayout";
 import Dashboard from "./pages/landlord/Dashboard";
 import MyDorms from "./pages/landlord/MyDorms";
+import AddDorm from "./pages/landlord/AddDorm";
 import Bookings from "./pages/landlord/Bookings";
 import LandlordMessages from "./pages/landlord/Messages";
 import Profile from "./pages/landlord/Profile";
@@ -101,6 +102,7 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dorms" element={<MyDorms />} />
+          <Route path="add" element={<AddDorm />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="messages" element={<LandlordMessages />} />
           <Route path="profile" element={<Profile />} />

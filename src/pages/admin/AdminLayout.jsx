@@ -8,11 +8,15 @@ import {
   Settings,
   LogOut,
   Bell,
+  Menu,
 } from "lucide-react";
+import { useState } from "react";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [open, setOpen] = useState(false);
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -23,48 +27,55 @@ export default function AdminLayout() {
     <div className="flex h-screen bg-gray-100">
 
       {/* SIDEBAR */}
-      <div className="w-64 bg-white border-r">
-
+      <div
+        className={`
+        fixed md:static z-50
+        w-64 h-full bg-white border-r
+        transform transition-transform
+        ${open ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+        `}
+      >
         <div className="p-5 text-xl font-bold text-blue-900">
           DormLink Admin
         </div>
 
-        <Menu
+        <MenuItem
           to="/admin/dashboard"
           icon={<LayoutDashboard size={18} />}
           label="Dashboard"
           active={location.pathname === "/admin/dashboard"}
         />
 
-        <Menu
+        <MenuItem
           to="/admin/users"
           icon={<Users size={18} />}
           label="Users"
           active={location.pathname === "/admin/users"}
         />
 
-        <Menu
+        <MenuItem
           to="/admin/listings"
           icon={<Building2 size={18} />}
           label="Listings"
           active={location.pathname === "/admin/listings"}
         />
 
-        <Menu
+        <MenuItem
           to="/admin/reports"
           icon={<Flag size={18} />}
           label="Reports"
           active={location.pathname === "/admin/reports"}
         />
 
-        <Menu
+        <MenuItem
           to="/admin/messages"
           icon={<MessageSquare size={18} />}
           label="Messages"
           active={location.pathname === "/admin/messages"}
         />
 
-        <Menu
+        <MenuItem
           to="/admin/settings"
           icon={<Settings size={18} />}
           label="Settings"
@@ -78,29 +89,36 @@ export default function AdminLayout() {
           <LogOut size={18} />
           Logout
         </button>
-
       </div>
-
 
 
       {/* MAIN */}
       <div className="flex flex-col flex-1">
 
-        <div className="flex justify-end items-center px-6 h-14 bg-white border-b">
+        {/* TOPBAR */}
+        <div className="flex justify-between items-center px-4 h-14 bg-white border-b md:px-6">
 
-          <Bell />
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden"
+          >
+            <Menu />
+          </button>
 
-          <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
-            A
+          <div className="flex gap-4 items-center">
+            <Bell />
+
+            <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
+              A
+            </div>
           </div>
 
         </div>
 
 
-        <div className="overflow-auto p-6">
-
+        {/* CONTENT */}
+        <div className="overflow-auto flex-1 p-4 md:p-6">
           <Outlet />
-
         </div>
 
       </div>
@@ -110,11 +128,11 @@ export default function AdminLayout() {
 }
 
 
-function Menu({ to, icon, label, active }) {
+function MenuItem({ to, icon, label, active }) {
   return (
     <Link
       to={to}
-      className={`w-full flex gap-3 px-5 py-3
+      className={`flex gap-3 px-5 py-3
       ${
         active
           ? "text-blue-900 bg-blue-50"

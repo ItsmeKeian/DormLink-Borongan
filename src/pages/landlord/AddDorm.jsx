@@ -1,0 +1,347 @@
+import { useState } from "react";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
+export default function AddDorm() {
+
+
+  const [description, setDescription] = useState("");
+
+  const [slots, setSlots] = useState("");
+  const [available, setAvailable] = useState("");
+
+  const [gender, setGender] = useState("Mixed");
+
+  const [wifi, setWifi] = useState(false);
+  const [aircon, setAircon] = useState(false);
+  const [cr, setCr] = useState(false);
+  const [parking, setParking] = useState(false);
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [rooms, setRooms] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [owner, setOwner] = useState("");
+  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
+  const [category, setCategory] = useState("Dorm");
+
+  const [image, setImage] = useState(null);
+
+  // ✅ BORONGAN DEFAULT
+  const [lat, setLat] = useState(11.6081);
+  const [lng, setLng] = useState(125.4319);
+
+
+  function LocationMarker() {
+    useMapEvents({
+      click(e) {
+        setLat(e.latlng.lat);
+        setLng(e.latlng.lng);
+      },
+    });
+
+    return <Marker position={[lat, lng]} />;
+  }
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("rooms", rooms);
+    formData.append("address", address);
+    formData.append("owner", owner);
+    formData.append("contact", contact);
+    formData.append("email", email);
+    formData.append("category", category);
+    formData.append("lat", lat);
+    formData.append("lng", lng);
+    formData.append("image", image);
+    formData.append("description", description);
+    formData.append("slots", slots);
+    formData.append("available", available);
+    formData.append("gender", gender);
+
+    formData.append("wifi", wifi);
+    formData.append("aircon", aircon);
+    formData.append("cr", cr);
+    formData.append("parking", parking);
+
+    console.log("Form ready", {
+      name,
+      price,
+      rooms,
+      address,
+      owner,
+      contact,
+      email,
+      category,
+      lat,
+      lng,
+      image,
+    });
+
+    alert("Dorm ready (temporary)");
+  };
+
+
+  return (
+
+    <div className="p-6">
+  
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+  
+        {/* LEFT FORM */}
+        <div className="p-6 bg-white rounded-2xl shadow">
+  
+          <h1 className="mb-6 text-2xl font-semibold">
+            Add Dorm
+          </h1>
+  
+  
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
+  
+            <div className="grid grid-cols-2 gap-4">
+  
+              <div>
+                <label>Dorm Name</label>
+                <input
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+  
+              <div>
+                <label>Category</label>
+                <select
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option>Dorm</option>
+                  <option>Boarding House</option>
+                  <option>Apartment</option>
+                  <option>Bedspace</option>
+                </select>
+              </div>
+  
+              <div>
+                <label>Price / month</label>
+                <input
+                  type="number"
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+  
+              <div>
+                <label>Total Rooms</label>
+                <input
+                  type="number"
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={rooms}
+                  onChange={(e) => setRooms(e.target.value)}
+                />
+              </div>
+  
+              <div>
+                <label>Owner Name</label>
+                <input
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={owner}
+                  onChange={(e) => setOwner(e.target.value)}
+                />
+              </div>
+  
+              <div>
+                <label>Contact Number</label>
+                <input
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+              </div>
+  
+              <div>
+                <label>Email</label>
+                <input
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label>Total Slots</label>
+                <input
+                  type="number"
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={slots}
+                  onChange={(e) => setSlots(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label>Available Slots</label>
+                <input
+                  type="number"
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={available}
+                  onChange={(e) => setAvailable(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label>Gender Allowed</label>
+
+                <select
+                  className="px-3 py-2 w-full rounded-lg border"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Mixed</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div>
+                  <label>Full Address</label>
+                  <input
+                    className="px-3 py-2 w-full rounded-lg border"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                <label>Dorm Image</label>
+                <input
+                  type="file"
+                  className="px-3 py-2 w-full rounded-lg border"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
+  
+
+
+            <div>
+                <label>Description</label>
+
+                <textarea
+                  className="px-3 py-2 w-full rounded-lg border"
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+
+
+
+              <div>
+
+                  <label className="block mb-2 font-medium">
+                    Amenities
+                  </label>
+
+                  <div className="grid grid-cols-2 gap-2">
+
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={wifi}
+                        onChange={(e) => setWifi(e.target.checked)}
+                      />
+                      Wifi
+                    </label>
+
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={aircon}
+                        onChange={(e) => setAircon(e.target.checked)}
+                      />
+                      Aircon
+                    </label>
+
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={cr}
+                        onChange={(e) => setCr(e.target.checked)}
+                      />
+                      Own CR
+                    </label>
+
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={parking}
+                        onChange={(e) => setParking(e.target.checked)}
+                      />
+                      Parking
+                    </label>
+
+                  </div>
+
+                </div>
+  
+  
+            <button
+              type="submit"
+              className="float-right px-6 py-2 text-white bg-blue-900 rounded-lg"
+            >
+              Save Dorm
+            </button>
+  
+          </form>
+  
+        </div>
+  
+  
+  
+        {/* RIGHT MAP */}
+        <div className="sticky top-6 p-4 bg-white shadow rounded-4xl h-fit">
+  
+          <label className="block mb-2 font-medium">
+            Select Location (Borongan)
+          </label>
+  
+          <MapContainer
+            center={[lat, lng]}
+            zoom={14}
+            style={{ height: "730px", width: "100%" }}
+          >
+            <TileLayer
+              attribution="&copy; OpenStreetMap"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+  
+            <LocationMarker />
+  
+          </MapContainer>
+  
+          <p className="mt-2 text-sm">
+            Lat: {lat} | Lng: {lng}
+          </p>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  );
+}
