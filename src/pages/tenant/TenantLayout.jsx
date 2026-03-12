@@ -8,11 +8,15 @@ import {
   Settings,
   LogOut,
   Bell,
+  Menu,
 } from "lucide-react";
+import { useState } from "react";
 
 export default function TenantLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [open, setOpen] = useState(false);
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -23,8 +27,15 @@ export default function TenantLayout() {
     <div className="flex h-screen bg-gray-100">
 
       {/* SIDEBAR */}
-      <div className="w-64 bg-white border-r">
-
+      <div
+        className={`
+        fixed md:static z-50
+        w-64 h-full bg-white border-r
+        transform transition-transform
+        ${open ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+        `}
+      >
         <div className="p-5 text-xl font-bold text-blue-900">
           DormLink
         </div>
@@ -78,27 +89,45 @@ export default function TenantLayout() {
           <LogOut size={18} />
           Logout
         </button>
-
       </div>
 
 
       {/* MAIN */}
       <div className="flex flex-col flex-1">
 
-        <div className="flex justify-end items-center px-6 h-14 bg-white border-b">
+        {/* TOPBAR */}
+        <div className="flex justify-between items-center px-4 h-14 bg-white border-b md:px-6">
 
-          <Bell />
+            {/* LEFT */}
+            <div className="flex gap-2 items-center">
 
-          <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
-            T
+              <button
+                onClick={() => setOpen(!open)}
+                className="md:hidden"
+              >
+                <Menu />
+              </button>
+
+            </div>
+
+
+            {/* RIGHT */}
+            <div className="flex gap-4 items-center">
+
+              <Bell />
+
+              <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
+                L
+              </div>
+
+            </div>
+
           </div>
 
-        </div>
 
-        <div className="overflow-auto p-6">
-
+        {/* CONTENT */}
+        <div className="overflow-auto flex-1 p-4 md:p-6">
           <Outlet />
-
         </div>
 
       </div>
@@ -112,7 +141,7 @@ function MenuItem({ to, icon, label, active }) {
   return (
     <Link
       to={to}
-      className={`w-full flex gap-3 px-5 py-3
+      className={`flex gap-3 px-5 py-3
       ${
         active
           ? "text-blue-900 bg-blue-50"

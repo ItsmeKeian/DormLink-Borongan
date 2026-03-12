@@ -98,22 +98,31 @@ export default function AdminLayout() {
         {/* TOPBAR */}
         <div className="flex justify-between items-center px-4 h-14 bg-white border-b md:px-6">
 
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden"
-          >
-            <Menu />
-          </button>
+            {/* LEFT */}
+            <div className="flex gap-2 items-center">
 
-          <div className="flex gap-4 items-center">
-            <Bell />
+              <button
+                onClick={() => setOpen(!open)}
+                className="md:hidden"
+              >
+                <Menu />
+              </button>
 
-            <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
-              A
             </div>
-          </div>
 
-        </div>
+
+            {/* RIGHT */}
+            <div className="flex gap-4 items-center">
+
+              <Bell />
+
+              <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
+                K
+              </div>
+
+            </div>
+
+          </div>
 
 
         {/* CONTENT */}
