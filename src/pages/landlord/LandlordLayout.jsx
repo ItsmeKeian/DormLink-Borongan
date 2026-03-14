@@ -131,7 +131,7 @@ export default function LandlordLayout() {
               <Bell />
 
               <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
-                L
+                K
               </div>
 
             </div>
