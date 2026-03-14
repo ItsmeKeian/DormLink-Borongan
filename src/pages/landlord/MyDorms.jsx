@@ -7,12 +7,14 @@ export default function MyDorms() {
   const navigate = useNavigate();
 
 
-  useEffect(() => {
+  // ✅ load listings (no cache)
+  const loadListings = () => {
 
     fetch(
-      "http://localhost/dormlinkborongan/php/get_landlord_listings.php",
+      "http://localhost/dormlinkborongan/php/get_landlord_listings.php?t=" + Date.now(),
       {
         credentials: "include",
+        cache: "no-store",
       }
     )
       .then(res => res.json())
@@ -24,32 +26,59 @@ export default function MyDorms() {
           setListings([]);
         }
 
-      });
+      })
+      .catch(err => console.log(err));
 
+  };
+
+
+  // ✅ first load
+  useEffect(() => {
+    loadListings();
   }, []);
 
 
 
+  // ✅ delete dorm (auto refresh after delete)
   const deleteDorm = async (id) => {
 
     if (!window.confirm("Delete this dorm?")) return;
 
-    const res = await fetch(
-      "http://localhost/dormlinkborongan/php/delete_listing.php",
-      {
-        method: "POST",
-        body: new URLSearchParams({ id }),
-        credentials: "include",
-      }
-    );
+    try {
 
-    const data = await res.json();
+      const formData = new FormData();
+      formData.append("id", id);
 
-    if (data.status === "success") {
-
-      setListings(prev =>
-        prev.filter(l => l.id !== id)
+      const res = await fetch(
+        "http://localhost/dormlinkborongan/php/delete_listing.php",
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
       );
+
+      const data = await res.json();
+
+      console.log("DELETE:", data);
+
+      if (data.status === "success") {
+
+        alert("List deleted successfully!");
+
+        // ✅ reload listings from DB
+        loadListings();
+
+      } else {
+
+        alert("Delete failed");
+
+      }
+
+    } catch (err) {
+
+      console.log(err);
+      alert("Error deleting");
 
     }
 
@@ -61,31 +90,21 @@ export default function MyDorms() {
 
     <div className="p-6 w-full">
 
-      {/* TITLE */}
-
       <h1 className="mb-6 text-2xl font-semibold">
         My Dorms
       </h1>
 
 
-
-      {/* EMPTY */}
-
       {listings.length === 0 && (
 
         <div className="p-10 text-center bg-white rounded-xl shadow">
-
           <p className="text-gray-500">
             No dorm listings yet
           </p>
-
         </div>
 
       )}
 
-
-
-      {/* GRID */}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
 
@@ -97,7 +116,7 @@ export default function MyDorms() {
           >
 
 
-            {/* IMAGE CLICKABLE */}
+            {/* IMAGE */}
 
             <img
               src={
@@ -124,28 +143,30 @@ export default function MyDorms() {
                 ₱{item.price} / month
               </p>
 
+
+              {/* STATUS */}
+
               <div className="mt-2">
 
-              {item.status === "pending" && (
-                <span className="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">
-                  Pending
-                </span>
-              )}
+                {item.status === "pending" && (
+                  <span className="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">
+                    Pending
+                  </span>
+                )}
 
-              {item.status === "approved" && (
-                <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                  Approved
-                </span>
-              )}
+                {item.status === "approved" && (
+                  <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                    Approved
+                  </span>
+                )}
 
-              {item.status === "rejected" && (
-                <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full">
-                  Rejected
-                </span>
-              )}
+                {item.status === "rejected" && (
+                  <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                    Rejected
+                  </span>
+                )}
 
-            </div>
-
+              </div>
 
 
               {/* BUTTONS */}
@@ -156,17 +177,15 @@ export default function MyDorms() {
                   onClick={() =>
                     navigate(`/landlord/edit/${item.id}`)
                   }
-                  className="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg transition hover:bg-blue-700"
+                  className="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   Edit
                 </button>
 
 
                 <button
-                  onClick={() =>
-                    deleteDorm(item.id)
-                  }
-                  className="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-lg transition hover:bg-red-700"
+                  onClick={() => deleteDorm(item.id)}
+                  className="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
                 >
                   Delete
                 </button>

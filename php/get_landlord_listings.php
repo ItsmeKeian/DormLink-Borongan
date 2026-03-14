@@ -1,8 +1,13 @@
 <?php
 
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: http://localhost:5174");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -12,7 +17,6 @@ require_once "dbconnect.php";
 
 
 if (!isset($_SESSION["user_id"])) {
-
     echo json_encode([]);
     exit;
 }
