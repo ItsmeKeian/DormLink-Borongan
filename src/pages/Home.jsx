@@ -1,10 +1,22 @@
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import ListingCard from "../components/ListingCard";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+
+  const [listings, setListings] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost/dormlink_api/getListings.php")
+      .then(res => res.json())
+      .then(data => setListings(data))
+      .catch(err => console.log(err));
+  }, []);
+
+
   return (
     <div className="bg-white">
 
@@ -53,10 +65,46 @@ export default function Home() {
               zoom={14}
               className="w-full h-full"
             >
+
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[11.6085, 125.4310]} />
+
+              {listings.map(dorm => (
+
+              <Marker
+                key={dorm.id}
+                position={[
+                  parseFloat(dorm.latitude),
+                  parseFloat(dorm.longitude)
+                ]}
+              >
+
+                <Popup>
+
+                  <div className="w-[180px]">
+
+                    <h3 className="font-bold">
+                      {dorm.title}
+                    </h3>
+
+                    <p>₱{dorm.price}</p>
+
+                    <Link
+                      to={`/listing/${dorm.id}`}
+                      className="text-blue-600 underline"
+                    >
+                      View
+                    </Link>
+
+                  </div>
+
+                </Popup>
+
+              </Marker>
+
+              ))}
+
             </MapContainer>
 
           </div>
@@ -87,8 +135,7 @@ export default function Home() {
                 price: 2500,
                 distance: 0.4,
                 status: "available",
-                image:
-                  "",
+                image: "",
               }}
             />
 
@@ -118,8 +165,7 @@ export default function Home() {
                   price: 2500,
                   distance: 0.4,
                   status: "available",
-                  image:
-                    "",
+                  image: "",
                 }}
               />
 
@@ -135,10 +181,46 @@ export default function Home() {
               zoom={14}
               className="w-full h-full"
             >
+
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[11.6085, 125.4310]} />
+
+            {listings.map(dorm => (
+
+            <Marker
+              key={dorm.id}
+              position={[
+                parseFloat(dorm.latitude),
+                parseFloat(dorm.longitude)
+              ]}
+            >
+
+              <Popup>
+
+                <div className="w-[180px]">
+
+                  <h3 className="font-bold">
+                    {dorm.title}
+                  </h3>
+
+                  <p>₱{dorm.price}</p>
+
+                  <Link
+                    to={`/listing/${dorm.id}`}
+                    className="text-blue-600 underline"
+                  >
+                    View
+                  </Link>
+
+                </div>
+
+              </Popup>
+
+            </Marker>
+
+            ))}
+
             </MapContainer>
 
           </div>
@@ -149,7 +231,7 @@ export default function Home() {
 
 
 
-      {/* ================= INFO SECTION ================= */}
+      {/* ================= INFO ================= */}
 
       <section className="px-8 py-28 bg-gray-50 lg:px-20">
 
