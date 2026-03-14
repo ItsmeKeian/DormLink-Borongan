@@ -10,7 +10,7 @@ export default function Home() {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/dormlink_api/getListings.php")
+    fetch("http://localhost/dormlinkborongan/php/getListings.php")
       .then(res => res.json())
       .then(data => setListings(data))
       .catch(err => console.log(err));
@@ -70,40 +70,31 @@ export default function Home() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {listings.map(dorm => (
+              {listings.map((dorm) => {
 
-              <Marker
-                key={dorm.id}
-                position={[
-                  parseFloat(dorm.latitude),
-                  parseFloat(dorm.longitude)
-                ]}
-              >
+              const lat = Number(dorm.latitude);
+              const lng = Number(dorm.longitude);
 
-                <Popup>
+              if (!lat || !lng) return null;
 
-                  <div className="w-[180px]">
+              return (
+                <Marker
+                  key={dorm.id}
+                  position={[lat, lng]}
+                >
+                  <Popup>
+                    <div>
 
-                    <h3 className="font-bold">
-                      {dorm.title}
-                    </h3>
+                      <b>{dorm.title}</b>
+                      <br />
+                      ₱{dorm.price}
 
-                    <p>₱{dorm.price}</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
 
-                    <Link
-                      to={`/listing/${dorm.id}`}
-                      className="text-blue-600 underline"
-                    >
-                      View
-                    </Link>
-
-                  </div>
-
-                </Popup>
-
-              </Marker>
-
-              ))}
+              })}
 
             </MapContainer>
 
@@ -176,11 +167,12 @@ export default function Home() {
 
           <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl sticky top-24">
 
-            <MapContainer
-              center={[11.6085, 125.4310]}
-              zoom={14}
-              className="w-full h-full"
-            >
+          <MapContainer
+            key={listings.length}
+            center={[11.6085, 125.4310]}
+            zoom={14}
+            className="w-full h-full"
+          >
 
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

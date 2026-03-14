@@ -3,24 +3,26 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "dormlinkborongan");
+require "dbconnect.php";
 
-if ($conn->connect_error) {
-    die("Connection failed");
+try {
+
+    $stmt = $pdo->prepare("
+    SELECT id, title, price, latitude, longitude
+    FROM listings
+");
+
+    $stmt->execute();
+
+    $listings = $stmt->fetchAll();
+
+    echo json_encode($listings);
+
+} catch (Exception $e) {
+
+    echo json_encode([
+        "status" => "error",
+        "message" => $e->getMessage()
+    ]);
+
 }
-
-$sql = "SELECT id, title, price, latitude, longitude 
-        FROM listings 
-        WHERE status = 'approved'";
-
-$result = $conn->query($sql);
-
-$listings = [];
-
-while ($row = $result->fetch_assoc()) {
-    $listings[] = $row;
-}
-
-echo json_encode($listings);
-
-?>
