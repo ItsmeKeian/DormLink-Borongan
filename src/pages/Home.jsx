@@ -1,33 +1,57 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import ListingCard from "../components/ListingCard";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import L from "leaflet";
+import { useMapEvents } from "react-leaflet";
+
 
 export default function Home() {
   
+  const [zoom, setZoom] = useState(15);
 
 
-      const houseIcon = new L.Icon({
-        iconUrl: "/house.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-      });
-
-
-    const priceIcon = (price, zoom) =>
-      L.divIcon({
-        className: "",
-        html: `
-          <div class="${
-            zoom >= 15 ? "marker-big" : "marker-small"
-          }">
-            ₱${price}
-          </div>
-        `,
-      });
+  const houseIcon = new L.Icon({
+    iconUrl: "/house.png",
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+  });
+  
+ 
+  const markerIcon = (price, title, zoom) =>
+    L.divIcon({
+      className: "",
+      iconSize: [120, 40],
+      iconAnchor: [14, 28], // ✅ IMPORTANT
+      html: `
+        <div style="display:flex;align-items:center;gap:4px">
+  
+          <img src="/house.png"
+            style="width:28px;height:28px"
+          />
+  
+          ${
+            zoom >= 16
+              ? `<div style="
+                  background:white;
+                  padding:2px 6px;
+                  border-radius:6px;
+                  font-size:12px;
+                  font-weight:600;
+                  box-shadow:0 2px 4px rgba(0,0,0,0.2);
+                ">
+                  ${title} ₱${price}
+                </div>`
+              : ""
+          }
+  
+        </div>
+      `,
+    });
+  
+  
 
   const [listings, setListings] = useState([]);
 
@@ -39,22 +63,34 @@ export default function Home() {
   }, []);
 
 
+  function MapEvents({ setZoom }) {
+    useMapEvents({
+      zoomend(e) {
+        setZoom(e.target.getZoom());
+      },
+    });
+    return null;
+  }
+  
+  
+
   return (
     <div className="bg-white">
 
       {/* ================= HERO ================= */}
 
-      <section className="px-8 pt-24 pb-28 lg:px-20">
+      <section className="px-8 pt-24 pb-28 min-h-screen lg:px-20">
+
 
         <div className="grid gap-16 items-center lg:grid-cols-2">
 
           <div>
 
-            <h1 className="text-6xl font-bold leading-tight text-blue-900">
+            <h1 className="text-7xl font-bold leading-tight text-blue-900">
               Find Verified Boarding Houses in Borongan
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg text-gray-600">
+            <p className="mt-6 max-w-xl text-lg text-gray-600">
               Safe, admin-approved rentals near ESSU Borongan
               with real locations and secure messaging.
             </p>
@@ -80,7 +116,7 @@ export default function Home() {
 
           {/* MAP */}
 
-          <div className="h-[450px] rounded-3xl overflow-hidden shadow-xl">
+          <div className="h-[650px] rounded-3xl overflow-hidden shadow-xl">
 
           <MapContainer
               center={[11.659633748282928, 125.44316608609613]}
@@ -88,39 +124,40 @@ export default function Home() {
               className="w-full h-full"
             >
 
+              <MapEvents setZoom={setZoom} />
+
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-                  {listings.map((dorm) => {
+              {listings.map((dorm) => {
 
-                  const lat = Number(dorm.latitude);
-                  const lng = Number(dorm.longitude);
+              const lat = Number(dorm.latitude);
+              const lng = Number(dorm.longitude);
 
-                  if (!lat || !lng) return null;
+              if (!lat || !lng) return null;
 
-                  const offset = dorm.id * 0.00005;
+              return (
+                <Marker
+                  key={dorm.id}
+                  position={[lat, lng]}
+                  icon={markerIcon(
+                    dorm.price,
+                    dorm.title,
+                    zoom
+                  )}
+                >
 
-                  return (
-                    <Marker
-                      key={dorm.id}
-                      position={[
-                        lat + offset,
-                        lng + offset
-                      ]}
-                      icon={houseIcon}
-                    >
-                      <Popup>
-                        <div>
-                          <b>{dorm.title}</b>
-                          <br />
-                          ₱{dorm.price}
-                        </div>
-                      </Popup>
-                    </Marker>
-                  );
+                  <Tooltip>
+                    {dorm.title} ₱{dorm.price}
+                  </Tooltip>
 
-                  })}
+                </Marker>
+              );
+
+              })}
+
+
 
             </MapContainer>
 
@@ -134,7 +171,7 @@ export default function Home() {
 
       {/* ================= FEATURED ================= */}
 
-      <section className="px-8 py-24 bg-gray-50 lg:px-20">
+      <section className="px-8 py-24 min-h-screen bg-gray-200 lg:px-20">
 
         <h2 className="mb-10 text-3xl font-bold text-blue-900">
           Featured Boarding Houses
@@ -142,7 +179,7 @@ export default function Home() {
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
-          {[1,2,3,4].map(i => (
+          {[1,2,3,4,5,6,7,8].map(i => (
 
             <ListingCard
               key={i}
@@ -166,7 +203,7 @@ export default function Home() {
 
       {/* ================= LISTINGS + MAP ================= */}
 
-      <section className="px-8 py-28 lg:px-20">
+      <section className="px-8 py-28 min-h-screen lg:px-20">
 
         <div className="grid gap-16 lg:grid-cols-2">
 
@@ -195,43 +232,44 @@ export default function Home() {
 
           <MapContainer
               center={[11.659633748282928, 125.44316608609613]}
-              zoom={15}
+              zoom={16}
               className="w-full h-full"
             >
+
+            <MapEvents setZoom={setZoom} />
 
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-                {listings.map((dorm) => {
+              {listings.map((dorm) => {
 
-                const lat = Number(dorm.latitude);
-                const lng = Number(dorm.longitude);
+              const lat = Number(dorm.latitude);
+              const lng = Number(dorm.longitude);
 
-                if (!lat || !lng) return null;
+              if (!lat || !lng) return null;
 
-                const offset = dorm.id * 0.00005;
+              return (
+                <Marker
+                  key={dorm.id}
+                  position={[lat, lng]}
+                  icon={markerIcon(
+                    dorm.price,
+                    dorm.title,
+                    zoom
+                  )}
+                >
 
-                return (
-                  <Marker
-                    key={dorm.id}
-                    position={[
-                      lat + offset,
-                      lng + offset
-                    ]}
-                    icon={houseIcon}
-                  >
-                    <Popup>
-                      <div>
-                        <b>{dorm.title}</b>
-                        <br />
-                        ₱{dorm.price}
-                      </div>
-                    </Popup>
-                  </Marker>
-                );
+                  <Tooltip>
+                    {dorm.title} ₱{dorm.price}
+                  </Tooltip>
 
-                })}
+                </Marker>
+              );
+
+              })}
+
+
 
             </MapContainer>
 
