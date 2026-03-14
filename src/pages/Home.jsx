@@ -70,31 +70,34 @@ export default function Home() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {listings.map((dorm) => {
+                  {listings.map((dorm) => {
 
-              const lat = Number(dorm.latitude);
-              const lng = Number(dorm.longitude);
+                  const lat = Number(dorm.latitude);
+                  const lng = Number(dorm.longitude);
 
-              if (!lat || !lng) return null;
+                  if (!lat || !lng) return null;
 
-              return (
-                <Marker
-                  key={dorm.id}
-                  position={[lat, lng]}
-                >
-                  <Popup>
-                    <div>
+                  const offset = dorm.id * 0.00005;
 
-                      <b>{dorm.title}</b>
-                      <br />
-                      ₱{dorm.price}
+                  return (
+                    <Marker
+                      key={dorm.id}
+                      position={[
+                        lat + offset,
+                        lng + offset
+                      ]}
+                    >
+                      <Popup>
+                        <div>
+                          <b>{dorm.title}</b>
+                          <br />
+                          ₱{dorm.price}
+                        </div>
+                      </Popup>
+                    </Marker>
+                  );
 
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-
-              })}
+                  })}
 
             </MapContainer>
 
