@@ -30,9 +30,9 @@ export default function AddDorm() {
 
   const [image, setImage] = useState([]);
 
-  // ✅ BORONGAN DEFAULT
-  const [lat, setLat] = useState(11.6081);
-  const [lng, setLng] = useState(125.4319);
+ // ✅ ESSU MAIN CENTER
+const [lat, setLat] = useState(11.5897);
+const [lng, setLng] = useState(125.4313);
 
 
   function LocationMarker() {
@@ -235,9 +235,8 @@ export default function AddDorm() {
                 </select>
               </div>
 
-            </div>
 
-            <div>
+              <div>
                   <label>Full Address</label>
                   <input
                     className="px-3 py-2 w-full rounded-lg border"
@@ -245,6 +244,10 @@ export default function AddDorm() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
+
+            </div>
+
+            
 
                 <div>
                 <label>Dorm Image</label>
@@ -340,10 +343,10 @@ export default function AddDorm() {
           </label>
   
           <MapContainer
-            center={[lat, lng]}
-            zoom={14}
-            style={{ height: "730px", width: "100%" }}
-          >
+              center={[11.5897, 125.4313]}
+              zoom={16}
+              style={{ height: "730px", width: "100%" }}
+            >
             <TileLayer
               attribution="&copy; OpenStreetMap"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

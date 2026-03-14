@@ -4,8 +4,30 @@ import ListingCard from "../components/ListingCard";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import L from "leaflet";
 
 export default function Home() {
+  
+
+
+      const houseIcon = new L.Icon({
+        iconUrl: "/house.png",
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+      });
+
+
+    const priceIcon = (price, zoom) =>
+      L.divIcon({
+        className: "",
+        html: `
+          <div class="${
+            zoom >= 15 ? "marker-big" : "marker-small"
+          }">
+            ₱${price}
+          </div>
+        `,
+      });
 
   const [listings, setListings] = useState([]);
 
@@ -28,7 +50,7 @@ export default function Home() {
 
           <div>
 
-            <h1 className="text-6xl font-bold leading-tight text-gray-900">
+            <h1 className="text-6xl font-bold leading-tight text-blue-900">
               Find Verified Boarding Houses in Borongan
             </h1>
 
@@ -60,11 +82,11 @@ export default function Home() {
 
           <div className="h-[450px] rounded-3xl overflow-hidden shadow-xl">
 
-            <MapContainer
-              center={[11.6085, 125.4310]}
-              zoom={14}
-              className="w-full h-full"
-            >
+          <MapContainer
+            center={[11.5897, 125.4313]}
+            zoom={15}
+            className="w-full h-full"
+          >
 
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -86,6 +108,7 @@ export default function Home() {
                         lat + offset,
                         lng + offset
                       ]}
+                      icon={houseIcon}
                     >
                       <Popup>
                         <div>
@@ -113,7 +136,7 @@ export default function Home() {
 
       <section className="px-8 py-24 bg-gray-50 lg:px-20">
 
-        <h2 className="mb-10 text-3xl font-bold">
+        <h2 className="mb-10 text-3xl font-bold text-blue-900">
           Featured Boarding Houses
         </h2>
 
@@ -171,50 +194,44 @@ export default function Home() {
           <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl sticky top-24">
 
           <MapContainer
-            key={listings.length}
-            center={[11.6085, 125.4310]}
-            zoom={14}
-            className="w-full h-full"
-          >
+              center={[11.5897, 125.4313]}
+              zoom={15}
+              className="w-full h-full"
+            >
 
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-            {listings.map(dorm => (
+                {listings.map((dorm) => {
 
-            <Marker
-              key={dorm.id}
-              position={[
-                parseFloat(dorm.latitude),
-                parseFloat(dorm.longitude)
-              ]}
-            >
+                const lat = Number(dorm.latitude);
+                const lng = Number(dorm.longitude);
 
-              <Popup>
+                if (!lat || !lng) return null;
 
-                <div className="w-[180px]">
+                const offset = dorm.id * 0.00005;
 
-                  <h3 className="font-bold">
-                    {dorm.title}
-                  </h3>
-
-                  <p>₱{dorm.price}</p>
-
-                  <Link
-                    to={`/listing/${dorm.id}`}
-                    className="text-blue-600 underline"
+                return (
+                  <Marker
+                    key={dorm.id}
+                    position={[
+                      lat + offset,
+                      lng + offset
+                    ]}
+                    icon={houseIcon}
                   >
-                    View
-                  </Link>
+                    <Popup>
+                      <div>
+                        <b>{dorm.title}</b>
+                        <br />
+                        ₱{dorm.price}
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
 
-                </div>
-
-              </Popup>
-
-            </Marker>
-
-            ))}
+                })}
 
             </MapContainer>
 
