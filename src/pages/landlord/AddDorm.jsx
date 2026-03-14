@@ -8,7 +8,7 @@ export default function AddDorm() {
   const [description, setDescription] = useState("");
   
 
-  const [slots, setSlots] = useState("");
+ 
   const [available, setAvailable] = useState("");
 
   const [gender, setGender] = useState("Mixed");
@@ -57,7 +57,7 @@ export default function AddDorm() {
     formData.append("price", price);
     formData.append("rooms", rooms);
   
-    formData.append("slots", slots);
+  
     formData.append("available", available);
     formData.append("gender", gender);
   
@@ -210,15 +210,6 @@ export default function AddDorm() {
                 />
               </div>
 
-              <div>
-                <label>Total Slots</label>
-                <input
-                  type="number"
-                  className="px-3 py-2 w-full rounded-lg border"
-                  value={slots}
-                  onChange={(e) => setSlots(e.target.value)}
-                />
-              </div>
 
               <div>
                 <label>Available Slots</label>

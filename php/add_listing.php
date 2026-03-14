@@ -35,7 +35,7 @@ try {
     $category = $_POST["category"] ?? "";
     $rooms = $_POST["rooms"] ?? 0;
 
-    $slots = $_POST["slots"] ?? 0;
+   
     $available = $_POST["available"] ?? 0;
 
     $gender = $_POST["gender"] ?? "";
@@ -67,7 +67,7 @@ try {
         title,
         category,
         rooms,
-        total_slots,
+      
         available_slots,
         gender,
         description,
@@ -84,7 +84,7 @@ try {
         availability,
         status
 
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     $stmt = $pdo->prepare($sql);
@@ -95,7 +95,6 @@ try {
         $title,
         $category,
         $rooms,
-        $slots,
         $available,
         $gender,
         $description,
