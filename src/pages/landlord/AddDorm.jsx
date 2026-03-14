@@ -31,24 +31,49 @@ export default function AddDorm() {
   const [image, setImage] = useState([]);
 
 
-const [lat, setLat] = useState(11.659633748282928);
-const [lng, setLng] = useState(125.44316608609613);
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  
 
 
-  function LocationMarker() {
-    useMapEvents({
-      click(e) {
-        setLat(e.latlng.lat);
-        setLng(e.latlng.lng);
-      },
-    });
+function LocationMarker() {
 
-    return <Marker position={[lat, lng]} />;
+  useMapEvents({
+    click(e) {
+      setLat(e.latlng.lat);
+      setLng(e.latlng.lng);
+    },
+  });
+
+  if (lat === null || lng === null) return null;
+
+  return (
+    <Marker
+      position={[lat, lng]}
+      draggable={true}
+      eventHandlers={{
+        dragend: (e) => {
+          const marker = e.target;
+          const pos = marker.getLatLng();
+
+          setLat(pos.lat);
+          setLng(pos.lng);
+        },
+      }}
+    />
+  );
+}
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (lat === null || lng === null) {
+    alert("Please select location on map first");
+    return;
   }
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
   
     const formData = new FormData();
   
@@ -322,12 +347,16 @@ const [lng, setLng] = useState(125.44316608609613);
                 </div>
   
   
-            <button
-              type="submit"
-              className="float-right px-6 py-2 text-white bg-blue-900 rounded-lg"
-            >
-              Save Dorm
-            </button>
+                <button
+                type="submit"
+                disabled={lat === null || lng === null}
+                className={`float-right px-6 py-2 rounded-lg text-white
+                  ${lat === null ? "bg-gray-400" : "bg-blue-900"}
+                `}
+              >
+                Save Dorm
+              </button>
+
   
           </form>
   
@@ -356,9 +385,16 @@ const [lng, setLng] = useState(125.44316608609613);
   
           </MapContainer>
   
-          <p className="mt-2 text-sm">
-            Lat: {lat} | Lng: {lng}
-          </p>
+          {lat === null ? (
+        <p className="mt-2 text-sm text-red-500">
+              Click map to set dorm location
+            </p>
+          ) : (
+            <p className="mt-2 text-sm">
+              Lat: {lat} | Lng: {lng}
+            </p>
+          )}
+
   
         </div>
   
