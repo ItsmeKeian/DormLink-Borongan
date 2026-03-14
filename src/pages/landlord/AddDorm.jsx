@@ -30,9 +30,9 @@ export default function AddDorm() {
 
   const [image, setImage] = useState([]);
 
- // ✅ ESSU MAIN CENTER
-const [lat, setLat] = useState(11.5897);
-const [lng, setLng] = useState(125.4313);
+
+const [lat, setLat] = useState(11.659633748282928);
+const [lng, setLng] = useState(125.44316608609613);
 
 
   function LocationMarker() {
@@ -343,8 +343,8 @@ const [lng, setLng] = useState(125.4313);
           </label>
   
           <MapContainer
-              center={[11.5897, 125.4313]}
-              zoom={16}
+              center={[11.659633748282928, 125.44316608609613]}
+              zoom={15}
               style={{ height: "730px", width: "100%" }}
             >
             <TileLayer

@@ -83,10 +83,10 @@ export default function Home() {
           <div className="h-[450px] rounded-3xl overflow-hidden shadow-xl">
 
           <MapContainer
-            center={[11.5897, 125.4313]}
-            zoom={15}
-            className="w-full h-full"
-          >
+              center={[11.659633748282928, 125.44316608609613]}
+              zoom={15}
+              className="w-full h-full"
+            >
 
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -194,7 +194,7 @@ export default function Home() {
           <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl sticky top-24">
 
           <MapContainer
-              center={[11.5897, 125.4313]}
+              center={[11.659633748282928, 125.44316608609613]}
               zoom={15}
               className="w-full h-full"
             >
