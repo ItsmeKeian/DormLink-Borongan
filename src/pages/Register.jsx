@@ -1,77 +1,252 @@
 import { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Register() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [showPass, setShowPass] = useState(false);
+
+  const [form, setForm] = useState({
+    full_name: "",
+    email: "",
+    phone: "",
+    role: "student",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const setRole = (role) => {
+    setForm({
+      ...form,
+      role,
+    });
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+
+      const res = await axios.post(
+        "http://localhost/dormlinkborongan/php/register.php",
+        form,
+        { withCredentials: true }
+      );
+
+      alert(res.data.message);
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 bg-gradient-to-br">
 
-      <div className="p-8 w-full max-w-md bg-white rounded-2xl shadow-lg">
+    <div className="flex min-h-screen bg-gray-50">
 
-        {/* Title */}
-        <h1 className="mb-6 text-2xl font-semibold text-center text-gray-800">
-          Create DormLink Account
-        </h1>
 
-        <form className="space-y-4">
+      {/* LEFT PANEL */}
 
-          {/* Full Name */}
-          <div>
-            <label className="block mb-1 text-sm text-gray-700">
-              Full Name
-            </label>
+      <div className="flex justify-center items-center px-16 w-1/2 bg-blue-50">
 
-            <input
-              type="text"
-              className="px-3 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-400"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
+        <div className="max-w-md">
+
+          <h1 className="mb-4 text-5xl font-bold text-blue-900">
+            DormLink
+          </h1>
+
+          <p className="mb-6 text-lg text-blue-800">
+            Find your perfect dorm in Borongan
+          </p>
+
+          <ul className="mb-6 space-y-2 text-blue-900">
+
+            <li>✔ Verified users only</li>
+            <li>✔ Message landlords safely</li>
+            <li>✔ Easy booking system</li>
+            <li>✔ Built for ESSU students</li>
+
+          </ul>
+
+          <img
+            src="/signup.png"
+            className="w-full max-w-sm"
+          />
+
+        </div>
+
+      </div>
+
+
+
+      {/* RIGHT PANEL */}
+
+      <div className="flex justify-center items-center w-1/2">
+
+        <form
+          onSubmit={handleRegister}
+          className="bg-white p-10 rounded-2xl shadow-xl w-[440px]"
+        >
+
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">
+            Create Account
+          </h2>
+
+
+          {/* FULL NAME */}
+
+          <input
+            name="full_name"
+            placeholder="Full name"
+            onChange={handleChange}
+            className="p-2 mb-3 w-full rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+
+          {/* EMAIL */}
+
+          <input
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="p-2 mb-3 w-full rounded-lg border focus:ring-2 focus:ring-blue-500"
+          />
+
+
+          {/* PHONE */}
+
+          <input
+            name="phone"
+            placeholder="Phone number"
+            onChange={handleChange}
+            className="p-2 mb-3 w-full rounded-lg border focus:ring-2 focus:ring-blue-500"
+          />
+
+
+          {/* ROLE */}
+
+          <div className="mb-4">
+
+            <p className="mb-1 text-sm text-gray-600">
+              Register as
+            </p>
+
+            <div className="flex gap-2">
+
+              <button
+                type="button"
+                onClick={() => setRole("student")}
+                className={`flex-1 p-2 rounded-lg border transition ${
+                  form.role === "student"
+                    ? "bg-blue-900 text-white"
+                    : "bg-gray-100"
+                }`}
+              >
+                Student
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setRole("landlord")}
+                className={`flex-1 p-2 rounded-lg border transition ${
+                  form.role === "landlord"
+                    ? "bg-blue-900 text-white"
+                    : "bg-gray-100"
+                }`}
+              >
+                Landlord
+              </button>
+
+            </div>
+
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block mb-1 text-sm text-gray-700">
-              Email
-            </label>
+
+          {/* PASSWORD */}
+
+          <input
+            type={showPass ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="p-2 mb-3 w-full rounded-lg border focus:ring-2 focus:ring-blue-500"
+          />
+
+
+          {/* CONFIRM */}
+
+          <input
+            type={showPass ? "text" : "password"}
+            name="confirmPassword"
+            placeholder="Confirm password"
+            onChange={handleChange}
+            className="p-2 mb-3 w-full rounded-lg border focus:ring-2 focus:ring-blue-500"
+          />
+
+
+          {/* SHOW PASSWORD */}
+
+          <div className="flex items-center mb-3">
 
             <input
-              type="email"
-              className="px-3 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="checkbox"
+              onChange={() => setShowPass(!showPass)}
+              className="mr-2"
             />
+
+            <span className="text-sm text-gray-600">
+              Show password
+            </span>
+
           </div>
 
-          {/* Password */}
-          <div>
-            <label className="block mb-1 text-sm text-gray-700">
-              Password
-            </label>
 
-            <input
-              type="password"
-              className="px-3 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          {/* TERMS */}
+
+          <div className="flex items-center mb-4">
+
+            <input type="checkbox" className="mr-2" />
+
+            <span className="text-sm text-gray-600">
+              I agree to Terms and Conditions
+            </span>
+
           </div>
 
-          {/* Button */}
+
+          {/* BUTTON */}
+
           <button
-            type="submit"
-            className="py-2 w-full text-white bg-blue-900 rounded-lg transition hover:bg-blue-800"
+            className="p-2 w-full text-white bg-blue-900 rounded-lg transition hover:bg-blue-800"
           >
             Register
           </button>
 
-        </form>
 
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Already have account? Login
-        </p>
+          <p className="mt-4 text-sm text-center text-gray-600">
+
+            Already have account?{" "}
+
+            <Link to="/login" className="font-medium text-blue-900">
+              Login
+            </Link>
+
+          </p>
+
+        </form>
 
       </div>
 
