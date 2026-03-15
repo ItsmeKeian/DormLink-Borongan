@@ -1,4 +1,5 @@
 import ListingCard from "../ListingCard";
+import { getDistanceFromESSU } from "../../utils/distance";
 
 export default function FeaturedSection({ listings }) {
 
@@ -37,39 +38,32 @@ export default function FeaturedSection({ listings }) {
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
 
-        {listings
-          .slice(0, 8)
-          .map(dorm => {
+      {listings.slice(0, 8).map(dorm => {
 
-            const lat = Number(dorm.latitude);
-            const lng = Number(dorm.longitude);
+                const distance = getDistanceFromESSU(
+                Number(dorm.latitude),
+                Number(dorm.longitude)
+                );
 
-            if (!lat || !lng) return null;
+                return (
 
-            const distance = getDistance(
-              ESSU_LAT,
-              ESSU_LNG,
-              lat,
-              lng
-            );
+                <ListingCard
+                    key={dorm.id}
+                    listing={{
+                    id: dorm.id,
+                    title: dorm.title,
+                    price: dorm.price,
+                    status: dorm.status,
+                    distance: distance,
+                    image: dorm.image
+                        ? `http://localhost/dormlinkborongan/php/uploads/${dorm.image}`
+                        : "/noimg.jpg",
+                    }}
+                />
 
-            return (
+                );
 
-              <ListingCard
-                key={dorm.id}
-                listing={{
-                  id: dorm.id,
-                  title: dorm.title,
-                  price: dorm.price,
-                  distance: distance,
-                  status: dorm.status,
-                  image: dorm.image,
-                }}
-              />
-
-            );
-
-          })}
+                })}
 
 
       </div>

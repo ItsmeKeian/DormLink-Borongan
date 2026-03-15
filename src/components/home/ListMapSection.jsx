@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import ListingCard from "../ListingCard";
+import { getDistanceFromESSU } from "../../utils/distance";
 
 export default function ListMapSection({
   listings,
@@ -17,21 +18,32 @@ export default function ListMapSection({
 
         <div className="grid gap-8 sm:grid-cols-2">
 
-          {listings.slice(0, 4).map((dorm) => (
+        {listings.slice(0, 4).map(dorm => {
+
+            const distance = getDistanceFromESSU(
+            Number(dorm.latitude),
+            Number(dorm.longitude)
+            );
+
+            return (
 
             <ListingCard
-              key={dorm.id}
-              listing={{
+                key={dorm.id}
+                listing={{
                 id: dorm.id,
                 title: dorm.title,
                 price: dorm.price,
-                distance: 0,
                 status: dorm.status,
-                image: dorm.image,
-              }}
+                distance: distance,
+                image: dorm.image
+                    ? `http://localhost/dormlinkborongan/php/uploads/${dorm.image}`
+                    : "/noimg.jpg",
+                }}
             />
 
-          ))}
+            );
+
+            })}
 
         </div>
 

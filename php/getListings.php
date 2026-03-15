@@ -8,9 +8,22 @@ require "dbconnect.php";
 try {
 
     $stmt = $pdo->prepare("
-    SELECT id, title, price, latitude, longitude
-    FROM listings
-");
+        SELECT 
+            l.id,
+            l.title,
+            l.price,
+            l.latitude,
+            l.longitude,
+            l.status,
+            (
+                SELECT image
+                FROM listing_images
+                WHERE listing_id = l.id
+                LIMIT 1
+            ) AS image
+        FROM listings l
+        WHERE l.status = 'approved'
+    ");
 
     $stmt->execute();
 
