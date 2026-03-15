@@ -68,10 +68,42 @@ function LocationMarker() {
 
 
 const handleSubmit = async (e) => {
+
+  
   e.preventDefault();
 
+  if (!name.trim()) {
+    alert("Dorm name is required");
+    return;
+  }
+
+  if (!owner.trim()) {
+    alert("Owner name is required");
+    return;
+  }
+
+  if (!email.trim()) {
+    alert("Email is required");
+    return;
+  }
+
+  if (!price) {
+    alert("Price is required");
+    return;
+  }
+
+  if (!rooms) {
+    alert("Rooms is required");
+    return;
+  }
+
+  if (!address.trim()) {
+    alert("Address is required");
+    return;
+  }
+
   if (lat === null || lng === null) {
-    alert("Please select location on map first");
+    alert("Please select location on map");
     return;
   }
 
@@ -82,22 +114,15 @@ const handleSubmit = async (e) => {
     formData.append("category", category);
     formData.append("price", price);
     formData.append("rooms", rooms);
-  
-  
     formData.append("available", available);
     formData.append("gender", gender);
-  
     formData.append("owner", owner);
     formData.append("contact", contact);
     formData.append("email", email);
-  
     formData.append("address", address);
     formData.append("lat", lat);
     formData.append("lng", lng);
-  
     formData.append("description", description);
-  
-    // ✅ convert boolean to 1/0
     formData.append("wifi", wifi ? 1 : 0);
     formData.append("aircon", aircon ? 1 : 0);
     formData.append("cr", cr ? 1 : 0);
