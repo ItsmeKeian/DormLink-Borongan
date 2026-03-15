@@ -1,5 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
 
 export default function ListingDetail() {
 
@@ -61,13 +64,13 @@ export default function ListingDetail() {
 
   return (
 
-    <div className="p-6 mx-auto max-w-6xl">
+    <div className="px-6 mx-auto max-w-[1600px]">
 
       {/* BACK BUTTON */}
 
       <button
         onClick={() => navigate(-1)}
-        className="mb-4 text-sm text-gray-600 hover:underline"
+        className="mb-4 text-sm text-blue-900 hover:underline"
       >
         ← Back to listings
       </button>
@@ -87,191 +90,199 @@ export default function ListingDetail() {
 
       {/* ================= GALLERY ================= */}
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid gap-8 lg:grid-cols-2">
 
-        {images[0] && (
+              {/* LEFT */}
 
-          <div className="col-span-2 row-span-2">
+              <div>
 
-            <img
-              src={`http://localhost/dormlinkborongan/php/uploads/${images[0].image}`}
-              className="object-cover w-full h-full rounded-xl cursor-pointer"
-              onClick={() => openGallery(0)}
-            />
+                {/* GALLERY */}
+                <div className="grid grid-cols-4 gap-2">
 
-          </div>
+                  {images[0] && (
+                    <div className="col-span-2 row-span-2">
+                      <img
+                        src={`http://localhost/dormlinkborongan/php/uploads/${images[0].image}`}
+                        className="object-cover w-full h-[420px] rounded-xl cursor-pointer"
+                        onClick={() => openGallery(0)}
+                      />
+                    </div>
+                  )}
 
-        )}
+                  {images.slice(1, 5).map((img, i) => (
+                    <img
+                      key={i}
+                      src={`http://localhost/dormlinkborongan/php/uploads/${img.image}`}
+                      className="object-cover w-full h-48 rounded-xl cursor-pointer"
+                      onClick={() => openGallery(i + 1)}
+                    />
+                  ))}
+
+                </div>
+
+              </div>
 
 
-        {images.slice(1, 5).map((img, i) => (
+              {/* RIGHT */}
 
-          <img
-            key={i}
-            src={`http://localhost/dormlinkborongan/php/uploads/${img.image}`}
-            className="object-cover w-full h-40 rounded-xl cursor-pointer"
-            onClick={() => openGallery(i + 1)}
-          />
+              <div>
 
-        ))}
+                <div className="h-[420px] overflow-hidden rounded-xl shadow">
 
-      </div>
+                  {listing.latitude && listing.longitude && (
+
+                    <MapContainer
+                      center={[
+                        Number(listing.latitude),
+                        Number(listing.longitude),
+                      ]}
+                      zoom={16}
+                      className="w-full h-full"
+                    >
+
+                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                      <Marker
+                        position={[
+                          Number(listing.latitude),
+                          Number(listing.longitude),
+                        ]}
+                      />
+
+                    </MapContainer>
+
+                  )}
+
+                </div>
+
+              </div>
+
+              </div>
 
 
 
       {/* ================= CONTENT ================= */}
 
-      <div className="grid grid-cols-3 gap-8 mt-8">
+      <div className="grid gap-8 mt-8 lg:grid-cols-2">
 
+            {/* LEFT SIDE */}
+            <div>
 
-        {/* LEFT */}
+              {/* PRICE */}
+              <h2 className="text-xl font-semibold">
+                ₱{listing.price} / month
+              </h2>
 
-        <div className="col-span-2">
+              <div className="mt-3 text-gray-600">
+                <p>Rooms: {listing.rooms}</p>
+                <p>Slots: {listing.available_slots}</p>
+                <p>Gender: {listing.gender}</p>
+              </div>
 
+              {/* DESCRIPTION */}
+              <div className="mt-6">
+                <h3 className="font-semibold">Description</h3>
+                <p className="mt-2 text-gray-700">
+                  {listing.description}
+                </p>
+              </div>
 
-          <h2 className="text-xl font-semibold">
-            ₱{listing.price} / month
-          </h2>
+              {/* AMENITIES */}
+              <div className="mt-6">
+                <h3 className="font-semibold">Amenities</h3>
 
+                <div className="grid grid-cols-2 gap-2 mt-2">
 
-          <div className="mt-3 text-gray-600">
+                  {listing.wifi == 1 && <p>✔ Wifi</p>}
+                  {listing.aircon == 1 && <p>✔ Aircon</p>}
+                  {listing.own_cr == 1 && <p>✔ Own CR</p>}
+                  {listing.parking == 1 && <p>✔ Parking</p>}
 
-            <p>Rooms: {listing.rooms}</p>
-            <p>Slots: {listing.available_slots}</p>
-            <p>Gender: {listing.gender}</p>
-
-          </div>
-
-
-
-          {/* DESCRIPTION */}
-
-          <div className="mt-6">
-
-            <h3 className="font-semibold">
-              Description
-            </h3>
-
-            <p className="mt-2 text-gray-700">
-              {listing.description}
-            </p>
-
-          </div>
-
-
-
-          {/* AMENITIES */}
-
-          <div className="mt-6">
-
-            <h3 className="font-semibold">
-              Amenities
-            </h3>
-
-            <div className="grid grid-cols-2 gap-2 mt-2">
-
-              {listing.wifi == 1 && <p>✔ Wifi</p>}
-              {listing.aircon == 1 && <p>✔ Aircon</p>}
-              {listing.own_cr == 1 && <p>✔ Own CR</p>}
-              {listing.parking == 1 && <p>✔ Parking</p>}
+                </div>
+              </div>
 
             </div>
 
-          </div>
+
+            {/* RIGHT SIDE */}
+            <div className="space-y-4">
 
 
-        </div>
+              {/* PRICE CARD */}
+              <div className="p-6 rounded-xl border shadow">
 
+                <p className="text-2xl font-semibold">
+                  ₱{listing.price}
+                </p>
 
+                <p className="text-gray-500">
+                  per month
+                </p>
 
-        {/* RIGHT CARD */}
+                <button className="w-full py-2.5 mt-4 text-white bg-blue-800 rounded-lg hover:bg-blue-700">
+                  Message landlord
+                </button>
 
-        <div className="sticky top-6 p-6 rounded-xl border shadow h-fit">
+              </div>
 
-          <p className="text-2xl font-semibold">
-            ₱{listing.price}
-          </p>
+            </div>
 
-          <p className="text-gray-500">
-            per month
-          </p>
-
-
-          <button
-            className="py-2 mt-4 w-full text-white bg-blue-900 rounded-lg hover:bg-blue-800"
-          >
-            Message landlord
-          </button>
-
-        </div>
-
-
-      </div>
+            </div>
 
 
 
       {/* ================= MODAL ================= */}
 
-      {showGallery && (
+     
 
-        <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-90">
+       
 
+              {showGallery && (
+
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-90">
 
           {/* BACK BUTTON */}
 
-          <button
-            onClick={() => navigate(-1)}
-            className="absolute top-4 left-6 px-4 py-2 text-white bg-black bg-opacity-60 rounded-lg"
-          >
-            ← Back
-          </button>
-
-
-
-          {/* CLOSE */}
+         
 
           <button
-            className="absolute top-4 right-6 text-3xl text-white"
             onClick={() => setShowGallery(false)}
+            className="absolute top-4 right-6 text-4xl text-white z-[10000]"
           >
             ✕
           </button>
 
 
-
           {/* PREV */}
 
           <button
-            className="absolute left-4 text-4xl text-white"
             onClick={prev}
+            className="absolute left-4 z-50 text-5xl text-white"
           >
             ❮
           </button>
-
 
 
           {/* IMAGE */}
 
           <img
             src={`http://localhost/dormlinkborongan/php/uploads/${images[current].image}`}
-            className="max-h-[85vh] rounded-lg"
+            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
           />
-
 
 
           {/* NEXT */}
 
           <button
-            className="absolute right-4 text-4xl text-white"
             onClick={next}
+            className="absolute right-4 z-50 text-5xl text-white"
           >
             ❯
           </button>
 
-
         </div>
 
-      )}
+        )}
 
 
     </div>

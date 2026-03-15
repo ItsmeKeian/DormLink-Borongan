@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Listings() {
-
+  const navigate = useNavigate();
   const [listings, setListings] = useState([]);
 
 
@@ -135,6 +136,15 @@ export default function Listings() {
                 {/* ACTION */}
 
                 <td className="flex gap-2 py-2">
+
+                <button
+                  onClick={() =>
+                    navigate(`/admin/listing/view/${item.id}`)
+                  }
+                  className="px-2 py-1 bg-gray-300 rounded"
+                  >
+                  View
+                  </button>
 
                   <button
                     onClick={() =>

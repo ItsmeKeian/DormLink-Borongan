@@ -19,6 +19,7 @@ import AdminListings from "./pages/admin/Listings";
 import AdminReports from "./pages/admin/Reports";
 import AdminMessages from "./pages/admin/Messages";
 import AdminSettings from "./pages/admin/Settings";
+import AdminListingView from "./pages/admin/AdminListingView";
 
 // ---------- LANDLORD ----------
 import LandlordLayout from "./pages/landlord/LandlordLayout";
@@ -87,6 +88,7 @@ export default function App() {
           <Route path="reports" element={<AdminReports />} />
           <Route path="messages" element={<AdminMessages />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="listing/view/:id" element={<AdminListingView />} />
         </Route>
 
 
