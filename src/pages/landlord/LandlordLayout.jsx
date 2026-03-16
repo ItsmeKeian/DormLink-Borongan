@@ -23,6 +23,9 @@ export default function LandlordLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [verifyOpen, setVerifyOpen] = useState(false);
 
+
+  
+
   const handleLogout = async () => {
     await fetch(
       "http://localhost/dormlinkborongan/php/logout.php",

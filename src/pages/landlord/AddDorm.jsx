@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import VerifyModal from "../../components/VerifyModal";
 
 
 export default function AddDorm() {
@@ -34,140 +35,168 @@ export default function AddDorm() {
 
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
+
+  const [verifyOpen, setVerifyOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(1);
   
 
 
-function LocationMarker() {
 
-  useMapEvents({
-    click(e) {
-      setLat(e.latlng.lat);
-      setLng(e.latlng.lng);
-    },
-  });
 
-  if (lat === null || lng === null) return null;
+      useEffect(() => {
 
-  return (
-    <Marker
-      position={[lat, lng]}
-      draggable={true}
-      eventHandlers={{
-        dragend: (e) => {
-          const marker = e.target;
-          const pos = marker.getLatLng();
-
-          setLat(pos.lat);
-          setLng(pos.lng);
-        },
-      }}
-    />
-  );
-}
+        const user = JSON.parse(localStorage.getItem("user"));
+      
+        if (!user) return;
+      
+        fetch(
+          `http://localhost/dormlinkborongan/php/getUser.php?user_id=${user.id}`
+        )
+          .then(res => res.json())
+          .then(data => {
+      
+            setIsVerified(data.is_verified);
+      
+          });
+      
+      }, []);
 
 
 
-const handleSubmit = async (e) => {
+        function LocationMarker() {
 
-  
-  e.preventDefault();
+          useMapEvents({
+            click(e) {
+              setLat(e.latlng.lat);
+              setLng(e.latlng.lng);
+            },
+          });
 
-  if (!name.trim()) {
-    alert("Dorm name is required");
-    return;
-  }
+          if (lat === null || lng === null) return null;
 
-  if (!owner.trim()) {
-    alert("Owner name is required");
-    return;
-  }
+          return (
+            <Marker
+              position={[lat, lng]}
+              draggable={true}
+              eventHandlers={{
+                dragend: (e) => {
+                  const marker = e.target;
+                  const pos = marker.getLatLng();
 
-  if (!email.trim()) {
-    alert("Email is required");
-    return;
-  }
-
-  if (!price) {
-    alert("Price is required");
-    return;
-  }
-
-  if (!rooms) {
-    alert("Rooms is required");
-    return;
-  }
-
-  if (!address.trim()) {
-    alert("Address is required");
-    return;
-  }
-
-  if (lat === null || lng === null) {
-    alert("Please select location on map");
-    return;
-  }
-
-  
-    const formData = new FormData();
-  
-    formData.append("name", name);
-    formData.append("category", category);
-    formData.append("price", price);
-    formData.append("rooms", rooms);
-    formData.append("available", available);
-    formData.append("gender", gender);
-    formData.append("owner", owner);
-    formData.append("contact", contact);
-    formData.append("email", email);
-    formData.append("address", address);
-    formData.append("lat", lat);
-    formData.append("lng", lng);
-    formData.append("description", description);
-    formData.append("wifi", wifi ? 1 : 0);
-    formData.append("aircon", aircon ? 1 : 0);
-    formData.append("cr", cr ? 1 : 0);
-    formData.append("parking", parking ? 1 : 0);
-  
-    for (let i = 0; i < image.length; i++) {
-      formData.append("images[]", image[i]);
-    }
-  
-    try {
-     
-      await fetch(
-        "http://localhost/dormlinkborongan/php/check_session.php",
-        {
-          credentials: "include",
+                  setLat(pos.lat);
+                  setLng(pos.lng);
+                },
+              }}
+            />
+          );
         }
-      )
-        .then(res => res.json())
-        .then(data => console.log("SESSION:", data));
-  
-      const res = await fetch(
-        "http://localhost/dormlinkborongan/php/add_listing.php",
-        {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-        }
-      );
-  
-      const data = await res.json();
-  
-      console.log(data);
-  
-      if (data.status === "success") {
-        alert("Dorm saved!");
-        window.location.reload();
-      } else {
-        alert("Error: " + data.message);
-      }
-  
-    } catch (err) {
-      console.log(err);
-      alert("Request failed");
-    }
-  };
+
+
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+
+          if (isVerified == 0) {
+            setVerifyOpen(true);
+            return;
+          }
+
+          if (!name.trim()) {
+            alert("Dorm name is required");
+            return;
+          }
+
+          if (!owner.trim()) {
+            alert("Owner name is required");
+            return;
+          }
+
+          if (!email.trim()) {
+            alert("Email is required");
+            return;
+          }
+
+          if (!price) {
+            alert("Price is required");
+            return;
+          }
+
+          if (!rooms) {
+            alert("Rooms is required");
+            return;
+          }
+
+          if (!address.trim()) {
+            alert("Address is required");
+            return;
+          }
+
+          if (lat === null || lng === null) {
+            alert("Please select location on map");
+            return;
+          }
+
+          
+            const formData = new FormData();
+          
+            formData.append("name", name);
+            formData.append("category", category);
+            formData.append("price", price);
+            formData.append("rooms", rooms);
+            formData.append("available", available);
+            formData.append("gender", gender);
+            formData.append("owner", owner);
+            formData.append("contact", contact);
+            formData.append("email", email);
+            formData.append("address", address);
+            formData.append("lat", lat);
+            formData.append("lng", lng);
+            formData.append("description", description);
+            formData.append("wifi", wifi ? 1 : 0);
+            formData.append("aircon", aircon ? 1 : 0);
+            formData.append("cr", cr ? 1 : 0);
+            formData.append("parking", parking ? 1 : 0);
+          
+            for (let i = 0; i < image.length; i++) {
+              formData.append("images[]", image[i]);
+            }
+          
+            try {
+            
+              await fetch(
+                "http://localhost/dormlinkborongan/php/check_session.php",
+                {
+                  credentials: "include",
+                }
+              )
+                .then(res => res.json())
+                .then(data => console.log("SESSION:", data));
+          
+              const res = await fetch(
+                "http://localhost/dormlinkborongan/php/add_listing.php",
+                {
+                  method: "POST",
+                  body: formData,
+                  credentials: "include",
+                }
+              );
+          
+              const data = await res.json();
+          
+              console.log(data);
+          
+              if (data.status === "success") {
+                alert("Dorm saved!");
+                window.location.reload();
+              } else {
+                alert("Error: " + data.message);
+              }
+          
+            } catch (err) {
+              console.log(err);
+              alert("Request failed");
+            }
+          };
 
 
   return (
@@ -425,8 +454,14 @@ const handleSubmit = async (e) => {
         </div>
   
       </div>
+              <VerifyModal
+          open={verifyOpen}
+          onClose={() => setVerifyOpen(false)}
+        />
   
     </div>
+
+    
   
   );
 }

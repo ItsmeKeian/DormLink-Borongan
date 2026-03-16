@@ -4,11 +4,11 @@ import "leaflet/dist/leaflet.css";
 
 export default function Browse() {
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col h-screen md:flex-row">
 
       {/* Filters */}
-      <div className="md:w-1/4 p-6 bg-white shadow-md">
-        <h2 className="font-semibold mb-4">Filters</h2>
+      <div className="p-6 bg-white shadow-md md:w-1/4">
+        <h2 className="mb-4 font-semibold">Filters</h2>
       </div>
 
       {/* Map */}

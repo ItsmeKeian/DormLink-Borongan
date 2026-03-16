@@ -59,7 +59,9 @@ try {
         "UPDATE users
          SET valid_id_image = ?,
              id_type = ?,
-             verification_status = 'pending'
+             verification_status = 'pending',
+             is_verified = 0,
+             verified_at = NULL
          WHERE id = ?"
 
     );
@@ -73,7 +75,7 @@ try {
 
     echo json_encode([
         "status" => "success",
-        "message" => "ID uploaded. Wait for approval."
+        "message" => "ID uploaded. Wait for admin approval."
     ]);
 
 } catch (PDOException $e) {
