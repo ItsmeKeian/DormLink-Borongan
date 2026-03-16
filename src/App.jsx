@@ -40,6 +40,7 @@ import TenantBookings from "./pages/tenant/Bookings";
 import TenantMessages from "./pages/tenant/Messages";
 import TenantProfile from "./pages/tenant/Profile";
 import TenantSettings from "./pages/tenant/Settings";
+import TenantListingDetail from "./pages/tenant/TenantListingDetail";
 
 export default function App() {
   const location = useLocation();
@@ -139,6 +140,7 @@ export default function App() {
           <Route path="messages" element={<TenantMessages />} />
           <Route path="profile" element={<TenantProfile />} />
           <Route path="settings" element={<TenantSettings />} />
+          <Route path="listing/:id" element={<TenantListingDetail />} />
         </Route>
 
 

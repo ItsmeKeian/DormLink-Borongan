@@ -1,156 +1,200 @@
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, useMapEvents } from "react-leaflet";
+
+import ListingCard from "../../components/ListingCard";
+import { getDistanceFromESSU } from "../../utils/distance";
 
 export default function Browse() {
-
-  const [category, setCategory] = useState("All");
-
-  const listings = [
-    {
-      id: 1,
-      name: "Girls Dorm",
-      price: 1500,
-      lat: 11.6085,
-      lng: 125.4310,
-      category: "Dorm",
-    },
-    {
-      id: 2,
-      name: "Boarding House",
-      price: 2000,
-      lat: 11.609,
-      lng: 125.432,
-      category: "Boarding House",
-    },
-  ];
+  
+  const navigate = useNavigate();
+  const [listings, setListings] = useState([]);
+  const [zoom, setZoom] = useState(15);
 
 
-  const filtered =
-    category === "All"
-      ? listings
-      : listings.filter(
-          (l) => l.category === category
-        );
+  // ================= FETCH =================
+
+  useEffect(() => {
+
+    fetch("http://localhost/dormlinkborongan/php/getListings.php")
+      .then(res => res.json())
+      .then(data => setListings(data))
+      .catch(err => console.log(err));
+
+  }, []);
+
+
+
+  // ================= ICON =================
+
+  const markerIcon = (price, title, zoom) =>
+    L.divIcon({
+      className: "",
+      iconSize: [120, 40],
+      iconAnchor: [14, 28],
+      html: `
+        <div style="display:flex;align-items:center;gap:4px">
+
+          <img src="/house.png"
+            style="width:28px;height:28px"
+          />
+
+          ${
+            zoom >= 16
+              ? `<div style="
+                  background:white;
+                  padding:2px 6px;
+                  border-radius:6px;
+                  font-size:12px;
+                  font-weight:600;
+                  box-shadow:0 2px 4px rgba(0,0,0,0.2);
+                ">
+                  ${title} ₱${price}
+                </div>`
+              : ""
+          }
+
+        </div>
+      `,
+    });
+
+
+
+  // ================= MAP EVENTS =================
+
+  function MapEvents() {
+    useMapEvents({
+      zoomend(e) {
+        setZoom(e.target.getZoom());
+      },
+    });
+    return null;
+  }
+
 
 
   return (
 
-    <div className="flex flex-col h-screen">
+    <section className="px-6 py-6">
 
-      {/* TOP SEARCH */}
-      <div className="flex gap-2 p-4 bg-white border-b">
+      {/* TOP */}
 
-        <input
-          placeholder="Search dorm..."
-          className="px-3 py-2 w-full rounded border"
-        />
+      <div className="flex justify-between items-center mb-4">
 
-        <select
-          className="px-3 py-2 rounded border"
-          value={category}
-          onChange={(e) =>
-            setCategory(e.target.value)
-          }
-        >
+        <h2 className="text-lg font-semibold">
+          All available dorms near ESSU
+        </h2>
+
+        <select className="px-3 py-1 rounded border">
+
           <option>All</option>
           <option>Dorm</option>
           <option>Apartment</option>
           <option>Boarding House</option>
           <option>Bedspace</option>
+
         </select>
 
       </div>
 
 
-      {/* BODY */}
-      <div className="flex flex-1">
+
+      <div className="grid gap-6 lg:grid-cols-2">
+
 
         {/* LEFT CARDS */}
-        <div className="grid overflow-y-auto grid-cols-1 gap-4 p-4 w-1/2 bg-gray-50">
 
-{filtered.map((d) => (
+        <div className="grid grid-cols-2 gap-4 max-h-[650px] overflow-y-auto">
 
-  <div
-    key={d.id}
-    className="overflow-hidden bg-white rounded-2xl shadow transition cursor-pointer hover:shadow-lg"
-  >
+        {listings.map(dorm => {
 
-    {/* IMAGE */}
-    <img
-      src="https://via.placeholder.com/400x200"
-      className="object-cover w-full h-40"
-    />
+        const distance = getDistanceFromESSU(
+          Number(dorm.latitude),
+          Number(dorm.longitude)
+        );
 
-    {/* BODY */}
-      <div className="p-3">
+        return (
 
-        <div className="flex justify-between">
+          <div
+            key={dorm.id}
+            onClick={() => navigate(`/tenant/listing/${dorm.id}`)}
+            className="cursor-pointer"
+          >
 
-          <h3 className="font-semibold">
-            {d.name}
-          </h3>
+            <ListingCard
+              listing={{
+                id: dorm.id,
+                title: dorm.title,
+                price: dorm.price,
+                status: dorm.status,
+                distance: distance,
+                image: dorm.image
+                  ? `http://localhost/dormlinkborongan/php/uploads/${dorm.image}`
+                  : "/noimg.jpg",
+              }}
+            />
 
-          <span className="font-semibold text-blue-900">
-            ₱{d.price}
-          </span>
+          </div>
+
+        );
+
+        })}
 
         </div>
 
-        <p className="text-sm text-gray-500">
-          Borongan City
-        </p>
-
-        <button
-          className="py-1 mt-2 w-full text-white bg-blue-900 rounded"
-        >
-          View
-        </button>
-
-      </div>
-
-    </div>
-
-  ))}
-
-  </div>
 
 
-        {/* RIGHT MAP */}
-        <div className="flex-1">
+        {/* MAP */}
+
+        <div className="h-[650px] rounded-3xl overflow-hidden shadow">
 
           <MapContainer
-            center={[11.6085, 125.4310]}
-            zoom={15}
-            className="h-full"
+            center={[11.6596, 125.4431]}
+            zoom={zoom}
+            className="w-full h-full"
           >
 
+            <MapEvents />
+
             <TileLayer
-              attribution="&copy; OpenStreetMap"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {filtered.map((d) => (
+            {listings.map((dorm) => {
 
-              <Marker
-                key={d.id}
-                position={[d.lat, d.lng]}
-              >
-                <Popup>
-                  {d.name} <br />
-                  ₱{d.price}
-                </Popup>
-              </Marker>
+              const lat = Number(dorm.latitude);
+              const lng = Number(dorm.longitude);
 
-            ))}
+              if (!lat || !lng) return null;
+
+              return (
+                <Marker
+                  key={dorm.id}
+                  position={[lat, lng]}
+                  icon={markerIcon(
+                    dorm.price,
+                    dorm.title,
+                    zoom
+                  )}
+                >
+                  <Tooltip>
+                    {dorm.title} ₱{dorm.price}
+                  </Tooltip>
+                </Marker>
+              );
+
+            })}
 
           </MapContainer>
 
         </div>
 
+
       </div>
 
-    </div>
+    </section>
 
   );
+
 }

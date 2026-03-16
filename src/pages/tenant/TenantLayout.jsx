@@ -56,7 +56,10 @@ export default function TenantLayout() {
           to="/tenant/browse"
           icon={<Search size={18} />}
           label="Browse Dorms"
-          active={location.pathname === "/tenant/browse"}
+          active={
+            location.pathname.startsWith("/tenant/browse") ||
+            location.pathname.startsWith("/tenant/listing")
+          }
         />
 
         <MenuItem
