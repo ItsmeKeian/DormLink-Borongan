@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LandlordDormView from "./pages/LandlordDormView";
 
+
 // ---------- ADMIN ----------
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDash from "./pages/admin/Dashboard";
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="/messages" element={<Messages />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+     
 
 
         {/* ================= ADMIN ================= */}

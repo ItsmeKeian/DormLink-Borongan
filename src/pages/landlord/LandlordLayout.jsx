@@ -1,3 +1,4 @@
+import VerifyModal from "../../components/VerifyModal";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -17,7 +18,10 @@ export default function LandlordLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [verifyOpen, setVerifyOpen] = useState(false);
 
   const handleLogout = async () => {
     await fetch(
@@ -126,13 +130,55 @@ export default function LandlordLayout() {
 
 
             {/* RIGHT */}
-            <div className="flex gap-4 items-center">
+            <div className="flex relative gap-4 items-center">
 
-              <Bell />
+            <Bell />
 
-              <div className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full">
-                K
+            <div
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="flex justify-center items-center w-8 h-8 text-white bg-blue-900 rounded-full cursor-pointer"
+            >
+              K
+            </div>
+
+            {menuOpen && (
+
+              <div className="absolute right-0 top-10 w-44 bg-white rounded-lg border shadow-lg">
+
+                <button
+                  onClick={() => navigate("/landlord/profile")}
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-100"
+                >
+                  Profile
+                </button>
+
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setVerifyOpen(true);
+                  }}
+                  className="block px-4 py-2 w-full text-left text-orange-600 hover:bg-gray-100"
+                >
+                  Verify account
+                </button>
+
+                <button
+                  onClick={() => navigate("/landlord/settings")}
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-100"
+                >
+                  Settings
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="block px-4 py-2 w-full text-left text-red-600 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+
               </div>
+
+            )}
 
             </div>
 
@@ -146,9 +192,14 @@ export default function LandlordLayout() {
 
         </div>
 
-      </div>
+        </div>
 
-    </div>
+          <VerifyModal
+            open={verifyOpen}
+            onClose={() => setVerifyOpen(false)}
+          />
+
+</div>
   );
 }
 
