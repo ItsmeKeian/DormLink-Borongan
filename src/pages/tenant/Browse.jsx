@@ -77,98 +77,113 @@ export default function Browse() {
   return (
 
     <section className="px-6 py-6">
-
+  
       {/* TOP */}
-
-      <div className="flex justify-between items-center mb-4">
-
-        <h2 className="text-lg font-semibold">
-          All available dorms near ESSU
-        </h2>
-
+  
+      <div className="flex justify-between items-center mb-3">
+  
+        <div className="flex gap-4 items-center">
+  
+          <h2 className="text-lg font-semibold">
+            All available dorms near ESSU
+          </h2>
+  
+          <button
+            onClick={() => navigate("/tenant/all")}
+            className="text-sm text-blue-900 hover:underline"
+          >
+            View all
+          </button>
+  
+        </div>
+  
+  
         <select className="px-3 py-1 rounded border">
-
+  
           <option>All</option>
           <option>Dorm</option>
           <option>Apartment</option>
           <option>Boarding House</option>
           <option>Bedspace</option>
-
+  
         </select>
-
+  
       </div>
-
-
-
-      <div className="grid gap-6 lg:grid-cols-2">
-
-
-        {/* LEFT CARDS */}
-
-        <div className="grid grid-cols-2 gap-4 max-h-[650px] overflow-y-auto">
-
-        {listings.map(dorm => {
-
-        const distance = getDistanceFromESSU(
-          Number(dorm.latitude),
-          Number(dorm.longitude)
-        );
-
-        return (
-
-          <div
-            key={dorm.id}
-            onClick={() => navigate(`/tenant/listing/${dorm.id}`)}
-            className="cursor-pointer"
-          >
-
-            <ListingCard
-              listing={{
-                id: dorm.id,
-                title: dorm.title,
-                price: dorm.price,
-                status: dorm.status,
-                distance: distance,
-                image: dorm.image
-                  ? `http://localhost/dormlinkborongan/php/uploads/${dorm.image}`
-                  : "/noimg.jpg",
-              }}
-            />
-
-          </div>
-
-        );
-
-        })}
-
+  
+  
+  
+      {/* MAIN */}
+  
+      <div className="grid lg:grid-cols-2 gap-6 h-[720px]">
+  
+  
+        {/* LEFT 6 CARDS */}
+  
+        <div className="grid grid-cols-2 grid-rows-3 auto-rows-fr gap-4 h-full">
+  
+          {listings.slice(0, 6).map((dorm) => {
+  
+            const distance = getDistanceFromESSU(
+              Number(dorm.latitude),
+              Number(dorm.longitude)
+            );
+  
+            return (
+  
+              <div
+                key={dorm.id}
+                onClick={() => navigate(`/tenant/listing/${dorm.id}`)}
+                className="h-full cursor-pointer"
+              >
+  
+                <ListingCard
+                  listing={{
+                    id: dorm.id,
+                    title: dorm.title,
+                    price: dorm.price,
+                    status: dorm.status,
+                    distance: distance,
+                    image: dorm.image
+                      ? `http://localhost/dormlinkborongan/php/uploads/${dorm.image}`
+                      : "/noimg.jpg",
+                  }}
+                />
+  
+              </div>
+  
+            );
+  
+          })}
+  
         </div>
-
-
-
+  
+  
+  
         {/* MAP */}
-
-        <div className="h-[650px] rounded-3xl overflow-hidden shadow">
-
+  
+        <div className="overflow-hidden h-full rounded-3xl shadow">
+  
           <MapContainer
             center={[11.6596, 125.4431]}
             zoom={zoom}
             className="w-full h-full"
           >
-
+  
             <MapEvents />
-
+  
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-
+  
             {listings.map((dorm) => {
-
+  
               const lat = Number(dorm.latitude);
               const lng = Number(dorm.longitude);
-
+  
               if (!lat || !lng) return null;
-
+  
               return (
+  
                 <Marker
                   key={dorm.id}
                   position={[lat, lng]}
@@ -182,19 +197,20 @@ export default function Browse() {
                     {dorm.title} ₱{dorm.price}
                   </Tooltip>
                 </Marker>
+  
               );
-
+  
             })}
-
+  
           </MapContainer>
-
+  
         </div>
-
-
+  
+  
       </div>
-
+  
     </section>
-
+  
   );
 
 }

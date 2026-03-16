@@ -454,7 +454,7 @@ export default function AddDorm() {
         </div>
   
       </div>
-              <VerifyModal
+      <VerifyModal
           open={verifyOpen}
           onClose={() => setVerifyOpen(false)}
         />

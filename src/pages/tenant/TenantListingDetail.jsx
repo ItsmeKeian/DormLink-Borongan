@@ -121,17 +121,17 @@ export default function TenantListingDetail() {
 
       {/* ================= GALLERY + MAP ================= */}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 items-stretch lg:grid-cols-2">
 
 
         {/* LEFT IMAGES */}
 
-        <div>
+        <div className="h-[420px]">
 
-          <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2 h-full">
 
             {images[0] && (
-              <div className="col-span-2 row-span-2">
+              <div className="col-span-2 row-span-2 h-full">
                 <img
                   src={`http://localhost/dormlinkborongan/php/uploads/${images[0].image}`}
                   className="object-cover w-full h-[420px] rounded-xl cursor-pointer"
