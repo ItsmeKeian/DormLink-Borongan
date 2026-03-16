@@ -9,6 +9,7 @@ export default function VerifyModal({ open, onClose }) {
   if (!open) return null;
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     const formData = new FormData();
@@ -29,17 +30,22 @@ export default function VerifyModal({ open, onClose }) {
       onClose();
 
     } catch (err) {
+
       console.log(err);
+
     }
+
   };
+
 
   return (
 
-    <div className="flex fixed inset-0 z-50 justify-center items-center bg-black/40">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
+
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl w-[400px]"
+        className="bg-white p-6 rounded-xl w-[400px] shadow-xl"
       >
 
         <h2 className="mb-2 text-lg font-semibold">
@@ -53,7 +59,7 @@ export default function VerifyModal({ open, onClose }) {
 
         <select
           onChange={(e) => setType(e.target.value)}
-          className="p-2 mb-3 w-full border"
+          className="p-2 mb-3 w-full rounded border"
         >
           <option value="student">
             Student ID
@@ -93,5 +99,7 @@ export default function VerifyModal({ open, onClose }) {
       </form>
 
     </div>
+
   );
+
 }
